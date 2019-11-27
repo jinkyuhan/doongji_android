@@ -11,7 +11,8 @@ const sequelize = new Sequelize(
 const Member = sequelize.define('member', {
     mem_id: {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     user_id: {
         type: Sequelize.STRING,
@@ -31,7 +32,8 @@ const Member = sequelize.define('member', {
 const Location = sequelize.define('location', {
     loc_id: {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     x_pos: {
         type: Sequelize.STRING,
@@ -48,7 +50,8 @@ const Location = sequelize.define('location', {
 const Group = sequelize.define('group', {
     grp_id: {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     grp_name: {
         type: Sequelize.STRING,
@@ -84,13 +87,14 @@ const Belongs_to = sequelize.define('belongs_to', {
             key : 'grp_id'
         },
         primaryKey: true
-    },
+    }
 });
 
 const Message_box = sequelize.define('message_box',{
     msg_id : {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     msg_body : {
         type: Sequelize.STRING

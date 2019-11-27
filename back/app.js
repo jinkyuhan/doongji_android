@@ -1,6 +1,7 @@
 // Web application server to connect to client Application with HTTP
 var express = require('express');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var logger = require('morgan');
 var membersApiRouter = require('./api/members');
 var models = require('./models/models');
@@ -23,6 +24,8 @@ app.use(express.json());
 app.use(express.urlencoded({
 	extended: false
 }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 

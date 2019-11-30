@@ -8,20 +8,52 @@ const Op = Sequelize.Op;
 /*CREATE*/
 
 /* POST NEW MEMBER */
-router.post('/', async function(req, res, next) {
-	
+router.post('/', async function (req, res, next) {
+	try {
+		var dupMemberCount = await models.Member.count({
+			where: {
+				user_id: String(req.body.user_id)
+			}
+		});
+		if (dupMemberCount === 0) {
+			try {
+				newMember = await models.Member.create({
+					user_id: req.body.user_id,
+					user_pw: req.body.user_pw,
+					user_name: req.body.user_name
+				});
+				res.json({
+					success: true,
+					newMember: newMember
+				})
+			} catch (err) {
+				console.log(`DB INSERT ROW TO MEMBERS TABLE ERROR!: ${err}`)
+			}
+		} else {
+			res.json({
+				success: false,
+				newMember: {}
+			})
+		}
+	} catch (err) {
+		console.log(`POST NEW MEMBER ERROR!!!: ${err}`);
+	}
 });
 
 /*READ*/
 /* GET MEMBERS */
-router.get('/', async function(req, res, next) {
+router.get('/', async function (req, res, next) {
 	if (req.query.user_id !== undefined && req.query.user_pw !== undefined) {
 		// BY ID & PW
 		try {
 			var members = await models.Member.findAll({
 				where: {
-					user_id: { [Op.eq]: String(req.query.user_id) },
-					user_pw: { [Op.eq]: String(req.query.user_pw) }
+					user_id: {
+						[Op.eq]: String(req.query.user_id)
+					},
+					user_pw: {
+						[Op.eq]: String(req.query.user_pw)
+					}
 				}
 			});
 			res.json(members);
@@ -53,11 +85,13 @@ router.get('/', async function(req, res, next) {
 });
 
 /*GET A MEMBER BY ID*/
-router.get('/:id', async function(req, res, next) {
+router.get('/:id', async function (req, res, next) {
 	// BY ID
 	try {
 		var theMember = await models.Member.findOne({
-			where: { mem_id: String(req.params.id) }
+			where: {
+				mem_id: String(req.params.id)
+			}
 		});
 		console.log(theMember);
 		res.json(theMember);

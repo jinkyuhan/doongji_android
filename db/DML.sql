@@ -29,21 +29,13 @@ INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user28','
 INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user29','1234','user29');
 INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user30','1234','user30');
 
-INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user31','1234','user31');
 
-
-INSERT INTO DOONG_JI.locations(X_pos, Y_pos) VALUES('0','0');
-INSERT INTO DOONG_JI.locations(X_pos, Y_pos) VALUES('1','1');
-INSERT INTO DOONG_JI.locations(X_pos, Y_pos) VALUES('2','2');
-INSERT INTO DOONG_JI.locations(X_pos, Y_pos) VALUES('3','3');
-INSERT INTO DOONG_JI.locations(X_pos, Y_pos) VALUES('4','4');
-
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_loc,Grp_radius) VALUES('test_groups1',1,500);
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_loc,Grp_radius) VALUES('test_groups2',2,1000);
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_loc,Grp_radius) VALUES('test_groups3',3,500);
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_loc,Grp_radius) VALUES('test_groups4',4,2000);
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_loc,Grp_radius) VALUES('test_groups5',5,1500);
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_loc,Grp_radius) VALUES('test_groups6',1,2500);
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups1',0.0,0.0,500);
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups2',0.0,0.0,1000);
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups3',0.0,0.0,500);
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups4',0.0,0.0,2000);
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups5',0.0,0.0,1500);
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups6',0.0,0.0,2500);
 
 
 

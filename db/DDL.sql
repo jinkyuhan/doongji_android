@@ -3,8 +3,8 @@ DROP TABLE DOONG_JI.belongs_tos;
 DROP TABLE DOONG_JI.message_boxes;
 DROP TABLE DOONG_JI.members;
 DROP TABLE DOONG_JI.groups;
-DROP TABLE DOONG_JI.locations;
 */
+
 /*
 CREATE TABLE DOONG_JI.members(
 Mem_id INT(6) NOT NULL AUTO_INCREMENT,
@@ -99,23 +99,7 @@ SET NEW.createdAt=CURRENT_TIMESTAMP,NEW.updatedAt=CURRENT_TIMESTAMP;
 END
 $$
 DELIMITER ;
--- locations trigger update 이후에 updatedAt 값 변화
-DELIMITER $$
-CREATE TRIGGER DOONG_JI.locations_BEFORE_UPDATE BEFORE UPDATE ON DOONG_JI.locations FOR EACH ROW
-BEGIN
-SET NEW.updatedAt=CURRENT_TIMESTAMP;
-END
-$$
-DELIMITER ;
 
---  locations trigger insert 이후에 createdAt 값 변화 
-DELIMITER $$
-CREATE TRIGGER DOONG_JI.locations_BEFORE_INSERT BEFORE INSERT ON DOONG_JI.locations FOR EACH ROW
-BEGIN
-SET NEW.createdAt=CURRENT_TIMESTAMP,NEW.updatedAt=CURRENT_TIMESTAMP;
-END
-$$
-DELIMITER ;
 -- members trigger update 이후에 updatedAt 값 변화 
 DELIMITER $$
 CREATE TRIGGER DOONG_JI.members_BEFORE_UPDATE BEFORE UPDATE ON DOONG_JI.members FOR EACH ROW
@@ -151,9 +135,9 @@ SET NEW.createdAt=CURRENT_TIMESTAMP,NEW.updatedAt=CURRENT_TIMESTAMP;
 END
 $$
 DELIMITER ;
-
+drop view Belongs_View;
 create view Belongs_View as(
-select user_id,g.grp_id, g.grp_name,g.grp_loc,g.grp_radius
+select m.user_id,m.user_name,g.grp_id, g.grp_name,g.grp_xpos,g.grp_ypos,g.grp_radius
 from groups g, belongs_tos b, members m
 where b.grp_id=g.grp_id
 and b.mem_id=m.mem_id);

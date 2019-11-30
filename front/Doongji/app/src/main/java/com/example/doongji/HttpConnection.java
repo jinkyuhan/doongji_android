@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -43,22 +44,17 @@ public class HttpConnection {
         return results;
     }
 
-    public JSONArray sendPost(String targetUrl, String parameters) throws Exception {
+    public JSONArray sendPost(String targetUrl) throws Exception {
 
-        URL url = new URL(targetUrl);
-        HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+        URL url = new URL(ipAdr+targetUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
         con.setRequestMethod("POST"); // HTTP POST 메소드 설정
         con.setRequestProperty("content-type", "application/x-www-form-urlencoded");// add request header
         con.setDoOutput(true);
 
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(parameters);
-        wr.flush();
-        wr.close();
-
         int responseCode = con.getResponseCode();
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(),"EUC-KR"));
 
         JSONArray results = new JSONArray(in.readLine());
         in.close();

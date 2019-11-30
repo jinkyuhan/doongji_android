@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EdgeEffect;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 
@@ -43,10 +44,21 @@ public class Sign_up extends AppCompatActivity {
                 HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
                 try {
                     results = connecter.sendPost("/api/members/"+param.get(0) + "/" + param.get(1)+"/"+param.get(2));
-                    if (results.getJSONObject(0).get("success")=="true") {
-                        Log.i("JSONPost","Success");
+
+                    if (((Boolean)results.getJSONObject(0).get("success")).booleanValue()) {
+                        runOnUiThread(new Runnable(){
+                            @Override
+                            public void run() {
+                                Toast.makeText(Sign_up.this,"회원가입이 성공적으로 이루어졌습니다..", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } else {
-                         Log.i("JSONPost","fail");
+                        runOnUiThread(new Runnable(){
+                            @Override
+                            public void run() {
+                                Toast.makeText(Sign_up.this,"회원가입에 실패하였습니다..", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                 } catch (Exception e) {

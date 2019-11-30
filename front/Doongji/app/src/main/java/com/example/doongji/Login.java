@@ -60,8 +60,12 @@ public class Login extends AppCompatActivity {
                                 Intent i = new Intent(Login.this, Group_index.class);
                                 startActivity(i);
                             } else {
-                                TextView textView = (TextView) findViewById(R.id.textView);
-                                textView.setText("로그인 실패\n다시 시도하세요.!!!!!");
+                                runOnUiThread(new Runnable(){
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(Login.this,"로그인이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
 
                         } catch (Exception e) {

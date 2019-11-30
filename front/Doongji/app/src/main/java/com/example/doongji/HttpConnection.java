@@ -1,6 +1,7 @@
 package com.example.doongji;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -29,6 +30,9 @@ public class HttpConnection {
 
     //sendGet, sendPost 출처 : https://118k.tistory.com/225
     public JSONArray sendGet(String tragetUrl) throws Exception {
+        String inputLine;
+        StringBuffer response=new StringBuffer();
+        JSONArray results=new JSONArray();
 
         URL url = new URL(ipAdr+tragetUrl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -39,13 +43,19 @@ public class HttpConnection {
         int responseCode = con.getResponseCode();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
-        JSONArray results = new JSONArray(in.readLine());
+        inputLine=in.readLine();
         in.close();
-        return results;
+        if(inputLine.charAt(0)=='{') {
+            results.put(new JSONObject(inputLine));
+            return results;
+        }
+        return new JSONArray(inputLine);
     }
 
     public JSONArray sendPost(String targetUrl) throws Exception {
-
+        StringBuffer response=new StringBuffer();
+        JSONArray results=new JSONArray();
+        String inputLine;
         URL url = new URL(ipAdr+targetUrl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
@@ -54,11 +64,15 @@ public class HttpConnection {
         con.setDoOutput(true);
 
         int responseCode = con.getResponseCode();
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(),"EUC-KR"));
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
-        JSONArray results = new JSONArray(in.readLine());
+        inputLine=in.readLine();
         in.close();
-        return results;
+        if(inputLine.charAt(0)=='{') {
+            results.put(new JSONObject(inputLine));
+            return results;
+        }
+        return new JSONArray(inputLine);
     }
 
     public JSONArray sendPut(String targetUrl, String parameters) throws Exception {

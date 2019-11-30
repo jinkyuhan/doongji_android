@@ -11,6 +11,10 @@ router.put('/', async function(req, res, next) {});
 /* GET GROUPS */
 router.get('/', async function(req, res, next) {
 	// BY NONE (ALL)
+	if( req.query.user_id !== undefined){
+		
+	}
+	else{
 	try {
 		var groups = await models.Group.findAll();
 		res.json(groups);
@@ -18,7 +22,9 @@ router.get('/', async function(req, res, next) {
 	} catch (err) {
 		console.log(`GET GROUP ERROR : ${err}`);
 	}
+}
 });
+
 
 /*GET A MEMBER BY GROUP ID*/
 router.get('/:id', async function(req, res, next) {

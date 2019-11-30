@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var membersApiRouter = require('./api/members');
+var groupsApiRouter = require('./api/groups');
 var models = require('./models/models');
 
 var app = express();
@@ -31,6 +32,6 @@ app.use(cookieParser());
 
 // API 
 app.use('/api/members', membersApiRouter);
-
+app.use('/api/groups', groupsApiRouter);
 // exports for www script to start listening
 module.exports = app;

@@ -8,19 +8,19 @@ const Op = Sequelize.Op;
 /*CREATE*/
 
 /* POST NEW MEMBER */
-router.post('/', async function (req, res, next) {
+router.post('/:user_id/:user_pw/:user_name', async function (req, res, next) {
 	try {
 		var dupMemberCount = await models.Member.count({
 			where: {
-				user_id: String(req.body.user_id)
+				user_id: String(req.params.user_id)
 			}
 		});
 		if (dupMemberCount === 0) {
 			try {
 				newMember = await models.Member.create({
-					user_id: req.body.user_id,
-					user_pw: req.body.user_pw,
-					user_name: req.body.user_name
+					user_id: req.params.user_id,
+					user_pw: req.params.user_pw,
+					user_name: req.params.user_name
 				});
 				res.json({
 					success: true,
@@ -43,44 +43,12 @@ router.post('/', async function (req, res, next) {
 /*READ*/
 /* GET MEMBERS */
 router.get('/', async function (req, res, next) {
-	if (req.query.user_id !== undefined && req.query.user_pw !== undefined) {
-		// BY ID & PW
-		try {
-			var members = await models.Member.findAll({
-				where: {
-					user_id: {
-						[Op.eq]: String(req.query.user_id)
-					},
-					user_pw: {
-						[Op.eq]: String(req.query.user_pw)
-					}
-				}
-			});
-			res.json(members);
-			console.log(`response : ${members}`);
-		} catch (err) {
-			console.log(`GET MEMBERS (by user_id & user_pw) ERROR!!! : ${err}`);
-		}
-	} else {
-		// else if (req.query.user_name !== undefined) {
-		// 	// BY NAME
-		// 	try {
-		// 		var theMember = await models.Members.findAll({
-		// 			where: { user_name: String(req.query.user_name) }
-		// 		});
-		// 		res.json(theMember);
-		// 	} catch (err) {
-		// 		console.log(`GET MEMBERS (by name) ERROR!!! : ${err} `);
-		// 	}
-		// }
-		// BY NONE (ALL)
-		try {
-			var members = await models.Member.findAll();
-			res.json(members);
-			console.log(`response : ${members}`);
-		} catch (err) {
-			console.log(`GET ALL MEMBERS ERROR!!! : ${err} `);
-		}
+	try {
+		var members = await models.Member.findAll();
+		res.json(members);
+		console.log(`response : ${members}`);
+	} catch (err) {
+		console.log(`GET ALL MEMBERS ERROR!!! : ${err} `);
 	}
 });
 
@@ -97,6 +65,27 @@ router.get('/:id', async function (req, res, next) {
 		res.json(theMember);
 	} catch (err) {
 		console.log(`GET THE MEMBER (BY ID) ERROR!!! : ${res}`);
+	}
+});
+
+/*GET A MEMBER BY USER_ID*/
+router.get('/:user_id/:user_pw', async function (req, res, next) {
+	// BY ID & PW
+	try {
+		var members = await models.Member.findAll({
+			where: {
+				user_id: {
+					[Op.eq]: String(req.params.user_id)
+				},
+				user_pw: {
+					[Op.eq]: String(req.params.user_pw)
+				}
+			}
+		});
+		res.json(members);
+		console.log(`response : ${members}`);
+	} catch (err) {
+		console.log(`GET MEMBERS (by user_id & user_pw) ERROR!!! : ${err}`);
 	}
 });
 

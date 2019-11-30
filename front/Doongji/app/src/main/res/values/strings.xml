@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Doongji</string>
-    <string name="IPAd">http://192.168.43.113:3000</string>
+    <string name="IPAd">http://13.125.186.211:50760</string>
 </resources>

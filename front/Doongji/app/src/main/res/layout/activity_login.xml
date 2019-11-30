@@ -40,7 +40,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/Sign_up_btn"
+            android:id="@+id/Sign_up_S_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClickButton"

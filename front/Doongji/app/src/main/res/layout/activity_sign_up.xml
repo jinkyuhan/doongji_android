@@ -36,6 +36,7 @@
             android:layout_height="match_parent" />
 
         <EditText
+            android:id="@+id/Sign_up_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -68,6 +69,7 @@
             android:layout_height="match_parent" />
 
         <EditText
+            android:id="@+id/Sign_up_pw"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -100,6 +102,7 @@
             android:layout_height="match_parent" />
 
         <EditText
+            android:id="@+id/Sign_up_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -123,9 +126,10 @@
 
 
         <Button
-            android:id="@+id/Create_group_btn"
+            android:id="@+id/Sign_up_F_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onClickButton"
             android:text="생성" />
 
     </LinearLayout>

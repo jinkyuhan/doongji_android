@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class Group extends AppCompatActivity {
 
@@ -16,6 +17,12 @@ public class Group extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
+
+        Intent intent = getIntent();
+
+        String group_name = intent.getExtras().getString("group_name");
+        TextView T = (TextView)findViewById(R.id.group_name);
+        T.setText(group_name);
     }
 
     public void onClickButton(View v) {

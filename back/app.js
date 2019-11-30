@@ -5,8 +5,9 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var membersApiRouter = require('./api/members');
 var groupsApiRouter = require('./api/groups');
+// var sentryRouter = require('./services/sentry');
+// var postmanRouter = require('./services/postman')
 var models = require('./models/models');
-
 var app = express();
 
 
@@ -33,5 +34,7 @@ app.use(cookieParser());
 // API 
 app.use('/api/members', membersApiRouter);
 app.use('/api/groups', groupsApiRouter);
+// app.use('/services/sentry', sentryRouter);
+// app.use('/services/postman', postmanRouter);
 // exports for www script to start listening
 module.exports = app;

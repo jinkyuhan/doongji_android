@@ -1,3 +1,4 @@
 back/node_modules
 *.log
 ./goorm.manifest
+./back/services/*.json

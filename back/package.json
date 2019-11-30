@@ -13,6 +13,7 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "sequelize": "^5.21.2",
-    "mysql2": "1.6.5"
+    "mysql2": "1.6.5",
+	"firebase-admin": "8.1.0"
   }
 }

@@ -43,6 +43,7 @@
             android:id="@+id/Sign_up_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onClickButton"
             android:text="회원가입" />
 
         <TextView
@@ -56,13 +57,15 @@
             android:onClick="onClickButton"
             android:text="로그인" />
     </LinearLayout>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:textSize="24sp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textSize="24sp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"

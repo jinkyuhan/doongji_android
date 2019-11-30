@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Message">
+    tools:context=".Sign_up">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_weight="2"
         android:gravity="center"
-        android:text="메세지 작성"
+        android:text="회원 가입"
         android:textSize="50sp" />
 
     <LinearLayout
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="전송할 대상 : "
+            android:text="ID 입력 : "
             android:textSize="16sp" />
 
         <View
@@ -45,7 +45,37 @@
             android:layout_width="30dp"
             android:layout_height="match_parent" />
 
-        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <View
+            android:layout_width="30dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="PW 입력 : "
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="30dp"
+            android:layout_height="match_parent" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="30dp"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
@@ -62,34 +92,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="위치 조건 : "
+            android:text="이름 입력 : "
             android:textSize="16sp" />
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_width="30dp"
+            android:layout_height="match_parent" />
 
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="wrap_content"
+        <EditText
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:entries="@array/Radius" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
             android:layout_weight="1" />
 
-    </LinearLayout>
+        <View
+            android:layout_width="30dp"
+            android:layout_height="match_parent" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6"
-        android:gravity="top"
-        android:hint="메세지를 입력하세요." />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -103,10 +123,10 @@
 
 
         <Button
-            android:id="@+id/Send_message_btn"
+            android:id="@+id/Create_group_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="보내기" />
+            android:text="생성" />
 
     </LinearLayout>
 

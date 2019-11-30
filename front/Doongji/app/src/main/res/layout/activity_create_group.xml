@@ -31,17 +31,20 @@
             android:text="둥지 이름 입력 : "
             android:textSize="16sp" />
 
+        <View
+            android:layout_width="30dp"
+            android:layout_height="match_parent" />
+
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="확인" />
+        <View
+            android:layout_width="30dp"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -60,17 +63,20 @@
             android:text="둥지 위치 입력 : "
             android:textSize="16sp" />
 
+        <View
+            android:layout_width="30dp"
+            android:layout_height="match_parent" />
+
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="확인" />
+        <View
+            android:layout_width="30dp"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
     <LinearLayout

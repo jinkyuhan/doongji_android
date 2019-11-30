@@ -29,23 +29,6 @@ const Member = sequelize.define('member', {
     }
 });
 
-const Location = sequelize.define('location', {
-    loc_id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    x_pos: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-    },
-    y_pos: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-    }
-});
 
 const Group = sequelize.define('group', {
     grp_id: {
@@ -57,26 +40,36 @@ const Group = sequelize.define('group', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    grp_loc: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references : {
-            model : 'locations',
-            key : 'loc_id'
-        }
-    },
+	grp_xpos: {
+		type: Sequelize.FLOAT,
+		allowNull: false
+	},
+	grp_ypos:{
+		type: Sequelize.FLOAT,
+		allowNull: false
+	},
     grp_radius: {
         type: Sequelize.INTEGER,
         defaultValue: 500
-    }
+    },
+	grp_creator: {
+		type: Sequelize.STRING,
+		allowNull: true,
+		references: {
+			model: 'members',
+			key: 'user_id',
+			onDelete: 'SET NULL'
+		}
+	}
 });
 
 const Belongs_to = sequelize.define('belongs_to', {
-    mem_id : {
-        type: Sequelize.INTEGER,
+    user_id : {
+        type: Sequelize.STRING,
         references : {
             model : 'members',
-            key : 'mem_id'
+            key : 'user_id',
+			onDelete: 'SET NULL'
         },
         primaryKey: true
     },
@@ -84,7 +77,8 @@ const Belongs_to = sequelize.define('belongs_to', {
         type: Sequelize.INTEGER,
         references : {
             model : 'groups',
-            key : 'grp_id'
+            key : 'grp_id',
+			onDelete: 'SET NULL'
         },
         primaryKey: true
     }
@@ -100,19 +94,19 @@ const Message_box = sequelize.define('message_box',{
         type: Sequelize.STRING
     },
     msg_sender: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
         references : {
             model : 'members',
-            key : 'mem_id'
+            key : 'user_id'
         }
     },
     msg_receiver: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
         references : {
             model : 'members',
-            key : 'mem_id'
+            key : 'user_id'
         }
     }
 });
@@ -120,7 +114,6 @@ const Message_box = sequelize.define('message_box',{
 module.exports = {
     sequelize: sequelize,
     Member : Member,
-    Location : Location,
     Group : Group,
     Belongs_to : Belongs_to,
     Message_box : Message_box

@@ -30,12 +30,12 @@ INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user29','
 INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user30','1234','user30');
 
 
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups1',0.0,0.0,500);
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups2',0.0,0.0,1000);
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups3',0.0,0.0,500);
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups4',0.0,0.0,2000);
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups5',0.0,0.0,1500);
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius) VALUES('test_groups6',0.0,0.0,2500);
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups1',0.0,0.0,500,'test_user1');
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups2',0.0,0.0,1000,'test_user2');
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups3',0.0,0.0,500,'test_user3');
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups4',0.0,0.0,2000,'test_user4');
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups5',0.0,0.0,1500,'test_user5');
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups6',0.0,0.0,2500,'test_user6');
 
 
 
@@ -91,7 +91,7 @@ select * from DOONG_JI.members;
 
 /*INSERT INTO DOONG_JI.locations(X_pos, Y_pos,createdAt,updatedAt ) VALUES('','');
 INSERT INTO DOONG_JI.groups(Grp_name,Grp_loc,Grp_radius) VALUES('','','');
-INSERT INTO DOONG_JI.belongs_tos(Mem_id, Grp_id) VALUES('','','');
+INSERT INTO DOONG_JI.belongs_tos(User_id, Grp_id) VALUES('','','');
 INSERT INTO DOONG_JI.message_boxes(Msg_body, Msg_sender, Msg_receiver) VALUES('', '', '');
 */
 /*

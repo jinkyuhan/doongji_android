@@ -142,5 +142,5 @@ create view Belongs_View as(
 select m.user_id,m.user_name,g.grp_id, g.grp_name,g.grp_xpos,g.grp_ypos,g.grp_radius
 from groups g, belongs_tos b, members m
 where b.grp_id=g.grp_id
-and b.mem_id=m.mem_id);
+and b.user_id=m.user_id);
 commit;

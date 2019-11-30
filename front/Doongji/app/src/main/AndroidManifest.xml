@@ -3,7 +3,9 @@
     package="com.example.doongji">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyCdhpJM8gwWdPEKTYeFagza5sFR8sMf1Gw"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,8 +22,10 @@
         <activity android:name=".Create_group" />
         <activity android:name=".Add_member" />
         <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

@@ -12,11 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
 public class Sign_up extends AppCompatActivity {
     private JSONArray results;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +30,7 @@ public class Sign_up extends AppCompatActivity {
         EditText id = (EditText) findViewById(R.id.Sign_up_id);
         EditText pw = (EditText) findViewById(R.id.Sign_up_pw);
         EditText name = (EditText) findViewById(R.id.Sign_up_name);
-        ArrayList<String> array=new ArrayList<>();
+        ArrayList<String> array = new ArrayList<>();
         array.add(id.getText().toString());
         array.add(pw.getText().toString());
         array.add(name.getText().toString());
@@ -43,23 +45,8 @@ public class Sign_up extends AppCompatActivity {
             public void run() {
                 HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
                 try {
-                    results = connecter.sendHttp("/api/members/"+param.get(0) + "/" + param.get(1)+"/"+param.get(2),"PUSH");
+                    results = connecter.sendHttp("/api/members/" + param.get(0) + "/" + param.get(1) + "/" + param.get(2), "POST");
 
-                    if (((Boolean)results.getJSONObject(0).get("success")).booleanValue()) {
-                        runOnUiThread(new Runnable(){
-                            @Override
-                            public void run() {
-                                Toast.makeText(Sign_up.this,"회원가입이 성공적으로 이루어졌습니다..", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else {
-                        runOnUiThread(new Runnable(){
-                            @Override
-                            public void run() {
-                                Toast.makeText(Sign_up.this,"회원가입에 실패하였습니다..", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -69,8 +56,27 @@ public class Sign_up extends AppCompatActivity {
 
         }
         Runnable r = new MyRunnable(array);
-        new Thread(r).start();
-        finish();
+        Thread t = new Thread(r);
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (((Boolean) results.getJSONObject(0).get("success")).booleanValue()) {
+                Toast.makeText(Sign_up.this, "회원가입이 성공적으로 이루어졌습니다..", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(Sign_up.this, "회원가입에 실패하였습니다..", Toast.LENGTH_SHORT).show();
+                ((EditText) findViewById(R.id.Sign_up_id)).setText(null);
+                ((EditText) findViewById(R.id.Sign_up_pw)).setText(null);
+                ((EditText) findViewById(R.id.Sign_up_name)).setText(null);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

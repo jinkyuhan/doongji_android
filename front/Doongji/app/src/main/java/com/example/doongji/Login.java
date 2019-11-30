@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -53,19 +54,7 @@ public class Login extends AppCompatActivity {
                         try {
 
                             Log.i("LoginInfo", "Id: " + param.get(0) + "Pw:" + param.get(1));
-                            results = connecter.sendHttp("/api/members?user_id=" + param.get(0) + "&user_pw=" + param.get(1), "GET");
-                            if (results.length() != 0) {
-                                User.setInfo(results.getJSONObject(0).get("user_id").toString(), results.getJSONObject(0).get("user_name").toString());
-                                Intent i = new Intent(Login.this, Group_index.class);
-                                startActivity(i);
-                            } else {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(Login.this, "로그인이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
+                            results = connecter.sendHttp("/api/members/" + param.get(0) + "/" + param.get(1), "GET");
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -74,7 +63,26 @@ public class Login extends AppCompatActivity {
                 }
 
                 Runnable r = new MyRunnable(array);
-                new Thread(r).start();
+                Thread t = new Thread(r);
+                t.start();
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if (results.length() != 0) {
+                    try {
+                        User.setInfo(results.getJSONObject(0).get("user_id").toString(), results.getJSONObject(0).get("user_name").toString());
+                        Intent i = new Intent(Login.this, Group_index.class);
+                        startActivity(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+
+                    Toast.makeText(Login.this, "로그인이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
 

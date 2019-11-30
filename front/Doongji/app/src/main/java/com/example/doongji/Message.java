@@ -16,7 +16,7 @@ public class Message extends AppCompatActivity {
         Intent intent = getIntent();
 
         String member_name = intent.getExtras().getString("send_message_mem");
-        TextView T = (TextView) findViewById(R.id.member_name);
+        TextView T = (TextView) findViewById(R.id.send_message_mem);
         T.setText(member_name);
     }
 }

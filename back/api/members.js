@@ -17,11 +17,13 @@ router.post('/:user_id/:user_pw/:user_name', async function (req, res, next) {
 		});
 		if (dupMemberCount === 0) {
 			try {
-				newMember = await models.Member.create({
+				var newMember = await models.Member.create({
 					user_id: req.params.user_id,
 					user_pw: req.params.user_pw,
 					user_name: req.params.user_name
 				});
+				console.log('response: ');
+				console.log(newMember);
 				res.json({
 					success: true,
 					newMember: newMember
@@ -30,6 +32,8 @@ router.post('/:user_id/:user_pw/:user_name', async function (req, res, next) {
 				console.log(`DB INSERT ROW TO MEMBERS TABLE ERROR!: ${err}`)
 			}
 		} else {
+			console.log('response: ');
+			console.log(newMember);
 			res.json({
 				success: false,
 				newMember: {}
@@ -68,7 +72,7 @@ router.get('/:id', async function (req, res, next) {
 	}
 });
 
-/*GET A MEMBER BY USER_ID*/
+/*GET A MEMBER BY USER_ID & USER_PW*/
 router.get('/:user_id/:user_pw', async function (req, res, next) {
 	// BY ID & PW
 	try {

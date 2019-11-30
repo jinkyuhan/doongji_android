@@ -9,7 +9,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class Group extends AppCompatActivity {
 
@@ -21,8 +27,30 @@ public class Group extends AppCompatActivity {
         Intent intent = getIntent();
 
         String group_name = intent.getExtras().getString("group_name");
-        TextView T = (TextView)findViewById(R.id.group_name);
+        TextView T = (TextView) findViewById(R.id.group_name);
         T.setText(group_name);
+
+        ListView listView = (ListView) findViewById(R.id.group_list);
+
+        ArrayList<String> aryList = new ArrayList<>();
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, R.layout.group_list, R.id.group_index, aryList
+        );
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        String item = (String) adapterView.getItemAtPosition(i); // i : position
+                        Intent intent = new Intent(getApplicationContext(), Message.class);
+                        intent.putExtra("member_name", item);
+                        Toast.makeText(Group.this, item + " selected", Toast.LENGTH_SHORT).show();
+                        startActivity(intent);
+                    }
+                }
+        );
     }
 
     public void onClickButton(View v) {
@@ -31,10 +59,6 @@ public class Group extends AppCompatActivity {
                 //OpenDrawer 출처 https://g-y-e-o-m.tistory.com/128
                 DrawerLayout drawer = findViewById(R.id.drawer_layout);
                 drawer.openDrawer(GravityCompat.END);
-                break;
-            case R.id.test2_btn:
-                Intent i1 = new Intent(Group.this, Message.class);
-                startActivity(i1);
                 break;
             case R.id.Add_member_btn:
                 Intent i2 = new Intent(Group.this, Add_member.class);

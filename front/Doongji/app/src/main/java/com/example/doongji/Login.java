@@ -41,8 +41,6 @@ public class Login extends AppCompatActivity {
                 startActivity(i1);
                 break;
             case R.id.Log_in_btn:
-/*                Intent i2 = new Intent(Login.this, Group_index.class);
-                startActivity(i2);*/
                 class MyRunnable implements Runnable {
                     ArrayList<String> param;
 
@@ -55,15 +53,16 @@ public class Login extends AppCompatActivity {
                         try {
 
                             Log.i("LoginInfo", "Id: " + param.get(0) + "Pw:" + param.get(1));
-                            results = connecter.sendGet("/api/members?user_id=" + param.get(0) + "&user_pw=" + param.get(1));
+                            results = connecter.sendHttp("/api/members?user_id=" + param.get(0) + "&user_pw=" + param.get(1), "GET");
                             if (results.length() != 0) {
+                                User.setInfo(results.getJSONObject(0).get("user_id").toString(), results.getJSONObject(0).get("user_name").toString());
                                 Intent i = new Intent(Login.this, Group_index.class);
                                 startActivity(i);
                             } else {
-                                runOnUiThread(new Runnable(){
+                                runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(Login.this,"로그인이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Login.this, "로그인이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }

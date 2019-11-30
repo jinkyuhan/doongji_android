@@ -43,7 +43,7 @@ public class Sign_up extends AppCompatActivity {
             public void run() {
                 HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
                 try {
-                    results = connecter.sendPost("/api/members/"+param.get(0) + "/" + param.get(1)+"/"+param.get(2));
+                    results = connecter.sendHttp("/api/members/"+param.get(0) + "/" + param.get(1)+"/"+param.get(2),"PUSH");
 
                     if (((Boolean)results.getJSONObject(0).get("success")).booleanValue()) {
                         runOnUiThread(new Runnable(){

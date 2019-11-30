@@ -151,4 +151,10 @@ SET NEW.createdAt=CURRENT_TIMESTAMP,NEW.updatedAt=CURRENT_TIMESTAMP;
 END
 $$
 DELIMITER ;
+
+create view Belongs_View as(
+select user_id,g.grp_id, g.grp_name,g.grp_loc,g.grp_radius
+from groups g, belongs_tos b, members m
+where b.grp_id=g.grp_id
+and b.mem_id=m.mem_id);
 commit;

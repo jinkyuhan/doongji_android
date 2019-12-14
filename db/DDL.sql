@@ -136,6 +136,30 @@ SET NEW.createdAt=CURRENT_TIMESTAMP,NEW.updatedAt=CURRENT_TIMESTAMP;
 END
 $$
 DELIMITER ;
+
+DROP TRIGGER DOONG_JI.belongs_tos_AFTER; 
+DELIMITER $$
+CREATE TRIGGER DOONG_JI.belongs_tos_AFTER AFTER DELETE ON DOONG_JI.belongs_tos FOR EACH ROW
+BEGIN
+DECLARE
+count int(3);
+
+SET @count :=(
+SELECT COUNT(*)
+FROM groups g, belongs_tos b, members m
+where b.grp_id=g.grp_id
+and b.user_id=m.user_id
+GROUP BY g.GRP_ID
+HAVING g.GRP_ID=OLD.grp_id);
+if @count IS NULL
+THEN 
+DELETE FROM DOONG_JI.groups
+WHERE GRP_ID=OLD.grp_id;
+END IF;
+END 
+$$
+DELIMITER ;
+
 drop view Belongs_View;
 create view Belongs_View as(
 select m.user_id,m.user_name,g.grp_id, g.grp_name,g.grp_xpos,g.grp_ypos,g.grp_radius

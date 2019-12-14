@@ -38,7 +38,6 @@ INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) V
 INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups6',0.0,0.0,2500,'test_user6');
 
 
-
 INSERT INTO DOONG_JI.belongs_tos(User_id, Grp_id) VALUES('test_user1',1);
 INSERT INTO DOONG_JI.belongs_tos(User_id, Grp_id) VALUES('test_user1',2);
 INSERT INTO DOONG_JI.belongs_tos(User_id, Grp_id) VALUES('test_user1',5);
@@ -85,6 +84,7 @@ INSERT INTO DOONG_JI.belongs_tos(User_id, Grp_id) VALUES('test_user29',2);
 INSERT INTO DOONG_JI.belongs_tos(User_id, Grp_id) VALUES('test_user29',3);
 INSERT INTO DOONG_JI.belongs_tos(User_id, Grp_id) VALUES('test_user29',5);
 INSERT INTO DOONG_JI.belongs_tos(User_id, Grp_id) VALUES('test_user30',5);
+
 commit;
 
 select * from DOONG_JI.members;

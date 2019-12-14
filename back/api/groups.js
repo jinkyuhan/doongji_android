@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models/models');
+var request = require('request');
 const Sequelize = require('sequelize');
 
 const Op = Sequelize.Op;
@@ -69,6 +70,7 @@ router.post('/:grp_name/:grp_xpos/:grp_ypos/:grp_creator', async function(req, r
 			success: true,
 			newGroup: newGroup
 		});
+		
 	} catch (err) {
 		console.log(`DB INSERT ROW TO GROUPS TABLE ERROR!: ${err}`);
 	}

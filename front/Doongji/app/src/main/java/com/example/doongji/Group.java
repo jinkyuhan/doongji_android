@@ -151,6 +151,9 @@ public class Group extends FragmentActivity implements OnMapReadyCallback {
     }
 
     public void onClickButton(View v) {
+        final ArrayList<String> array = new ArrayList<>();
+        array.add(group_id);
+        array.add(User.getId());
         switch (v.getId()) {
             case R.id.Option_btn:
                 //OpenDrawer 출처 https://g-y-e-o-m.tistory.com/128
@@ -174,7 +177,46 @@ public class Group extends FragmentActivity implements OnMapReadyCallback {
                         .setPositiveButton("예", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface arg0, int arg1) {
+                                        class MyRunnable implements Runnable {
+                                            ArrayList<String> param;
 
+                                            public MyRunnable(ArrayList<String> parameter) {
+                                                this.param = parameter;
+                                            }
+
+                                            public void run() {
+                                                HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
+                                                try {
+                                                    results = connecter.sendHttp("/api/groups/" + param.get(0) + "/" + param.get(1) , "DELETE");
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                        Runnable r = new MyRunnable(array);
+                                        Thread t = new Thread(r);
+                                        t.start();
+                                        try {
+                                            t.join();
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            if (((Boolean) results.getJSONObject(0).get("success")).booleanValue()) {
+                                                runOnUiThread(new Runnable() { public void run() {
+                                                    Toast.makeText(Group.this, "둥지를 나갔습니다.", Toast.LENGTH_SHORT).show();
+                                                    finish();
+                                                } });
+
+                                            } else {
+                                                runOnUiThread(new Runnable() { public void run() {
+                                                    Toast.makeText(Group.this, "둥지를 나가기에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                                    finish();
+                                                } });
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
                         )

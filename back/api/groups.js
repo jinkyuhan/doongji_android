@@ -70,14 +70,13 @@ router.post('/:grp_name/:grp_xpos/:grp_ypos/:grp_creator', async function(req, r
 			success: true,
 			newGroup: newGroup
 		});
-		
 	} catch (err) {
 		console.log(`DB INSERT ROW TO GROUPS TABLE ERROR!: ${err}`);
 	}
 });
 /*POST NEW MEMBER */
-router.post('/:grp_id/:user_id', async function(req, res, next){
-	try{
+router.post('/:grp_id/:user_id', async function(req, res, next) {
+	try {
 		var newBelong = await models.Belongs_to.create({
 			user_id: req.params.user_id,
 			grp_id: req.params.grp_id
@@ -87,18 +86,17 @@ router.post('/:grp_id/:user_id', async function(req, res, next){
 			success: true,
 			newGroup: newBelong
 		});
-	} catch(err){
+	} catch (err) {
 		res.json({
 			success: false,
-			newGroup:{}
-		})
+			newGroup: {}
+		});
 		console.log(`POST INSERT ROW TO BELONGSTO TABLE CONSTRAINT WARNINGS!`);
 	}
-})
+});
 /*UPDATE*/
 /* PUT GROUP BY ID */
 router.put('/:grp_id/:grp_name/:grp_xpos/:grp_ypos/:grp_radius', async function(req, res, next) {
-	console.log(req.params);
 	try {
 		var updatedGroup = await models.Group.update(
 			{
@@ -111,15 +109,34 @@ router.put('/:grp_id/:grp_name/:grp_xpos/:grp_ypos/:grp_radius', async function(
 				where: { grp_id: parseInt(req.params.grp_id) },
 				returning: true,
 				plain: true
-			});
+			}
+		);
 		console.log(`PUT UPDATE ROW IN GROUPS TABLE RESPONSE: ${updatedGroup}`);
-		if(updatedGroup[1] == 0){
-			res.json({success: false});
-		}else{
-			res.json({success: true});
+		if (updatedGroup[1] == 0) {
+			res.json({ success: false });
+		} else {
+			res.json({ success: true });
 		}
 	} catch (err) {
 		console.log(`PUT UPDATE ROW IN GROUPS TABLE ERROR!: ${err}`);
+	}
+});
+
+/*DELETE*/
+router.delete('/:grp_id/:user_id', async function(req, res, next) {
+	try {
+		var deletedCount = await models.Belongs_to.destroy({
+			where: {
+				grp_id: req.params.grp_id,
+				user_id: req.params.user_id
+			}
+		});
+		res.json({
+			succes: true,
+			deletedCount: deletedCount
+		})
+	} catch (err) {
+		console.log(`DELETE ROW IN BELONGS_TO ERROR!: ${err}`);
 	}
 });
 

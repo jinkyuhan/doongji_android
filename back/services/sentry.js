@@ -14,6 +14,7 @@ router.post('/:user_id/accessto/:grp_id',async function (req, res, next){
 			grp_id : req.params.grp_id
 		}
 	});
+	console.log('hihihi');
 });
 
 module.exports = router;

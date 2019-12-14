@@ -32,52 +32,54 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class Group extends AppCompatActivity {
+public class Group extends FragmentActivity implements OnMapReadyCallback {
 
     private JSONArray results;
     String group_id;
-    GoogleMap mMap;
+    String group_name;
+    Double grp_xpos, grp_ypos;
+    LatLng Doong_ji;
+    MarkerOptions marker;
+    SupportMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
 
-/*        SupportMapFragment mapFragment=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.f1);
-        mapFragment.getMapAsync(this);*/
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
     }
 
-/*    @Override
-    public void onMapReady(GoogleMap Map) {
-        mMap=Map;
-        Double xpos=0.0,ypos=0.0;
-        try {
-            xpos=((Double)(results.getJSONObject(Integer.parseInt(group_id)).get("grp_xpos"))).doubleValue();
-            ypos=((Double)(results.getJSONObject(Integer.parseInt(group_id)).get("grp_ypos"))).doubleValue();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        LatLng Doong_ji=new LatLng(xpos,ypos);
-        MarkerOptions marker=new MarkerOptions();
-        marker.title("우리 둥지");
 
-        Map.addMarker(marker);
-        Map.moveCamera(CameraUpdateFactory.newLatLng(Doong_ji));
-        Map.animateCamera(CameraUpdateFactory.zoomTo(14));
-    }*/
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        Doong_ji = new LatLng(grp_xpos, grp_ypos);
+        marker = new MarkerOptions().position(Doong_ji).title("우리 둥지");
 
+        googleMap.addMarker(marker);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Doong_ji));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+    }
     @Override
     protected void onResume() {
         super.onResume();
+
         Intent intent = getIntent();
         group_id = intent.getExtras().getString("grp_id");
+        group_name = intent.getExtras().getString("grp_name");
+        grp_xpos = intent.getExtras().getDouble("grp_xpos");
+        grp_ypos = intent.getExtras().getDouble("grp_ypos");
         TextView T = (TextView) findViewById(R.id.group_name);
-        T.setText(group_id);
+        T.setText(group_name);
+
+        mapFragment.getMapAsync(this);
+
 
         ListView listView = (ListView) findViewById(R.id.group);
 
         class MyRunnable implements Runnable {
             String id;
+
             public MyRunnable(String id) {
                 this.id = id;
             }
@@ -97,13 +99,15 @@ public class Group extends AppCompatActivity {
         ArrayList<String> aryList = new ArrayList<>();
         try {
             t.join();
+
             for (int i = 0; i < results.length(); i++) {
-                aryList.add(results.getJSONObject(i).get("user_name").toString());
+                if (User.getName().compareTo(results.getJSONObject(i).get("user_name").toString()) != 0) {
+                    aryList.add(results.getJSONObject(i).get("user_name").toString());
+                }
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -119,6 +123,11 @@ public class Group extends AppCompatActivity {
                         String item = (String) adapterView.getItemAtPosition(i); // i : position
                         Intent intent = new Intent(getApplicationContext(), Message.class);
                         intent.putExtra("send_message_mem", item);
+                        try {
+                            intent.putExtra("send_mem_id", results.getJSONObject(i).get("user_id").toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         Toast.makeText(Group.this, item + " selected", Toast.LENGTH_SHORT).show();
                         startActivity(intent);
                     }

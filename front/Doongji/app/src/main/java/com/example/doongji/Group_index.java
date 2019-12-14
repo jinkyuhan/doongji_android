@@ -74,6 +74,9 @@ public class Group_index extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), Group.class);
                         try {
                             intent.putExtra("grp_id", results.getJSONObject(i).get("grp_id").toString());
+                            intent.putExtra("grp_name",results.getJSONObject(i).get("grp_name").toString());
+                            intent.putExtra("grp_xpos",((Double)results.getJSONObject(i).get("grp_xpos")).doubleValue());
+                            intent.putExtra("grp_ypos",((Double)results.getJSONObject(i).get("grp_ypos")).doubleValue());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -132,7 +132,7 @@ router.delete('/:grp_id/:user_id', async function(req, res, next) {
 			}
 		});
 		res.json({
-			succes: true,
+			success: true,
 			deletedCount: deletedCount
 		})
 	} catch (err) {

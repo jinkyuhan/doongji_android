@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -46,9 +47,11 @@ public class Message extends AppCompatActivity {
 
             public void run() {
                 HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
+
                 try {
-                    results = connecter.sendHttp("/api/members/" + User.getId() + "/" + param.get(0) + "/" + member_id, "POST");
-                    Log.i("rrrrrrrr",User.getId() + "/" + param.get(0) + "/" + member_id);
+                    JSONObject json=new JSONObject();
+                    json.put("message",param.get(0));
+                    results = connecter.sendHttp("/services/postman/" + User.getId() + "/messages/" + member_id, "POST",json.toString());
 
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -51,6 +51,31 @@ public class HttpConnection {
         }
         return new JSONArray(inputLine);
     }
+    public JSONArray sendHttp(String tragetUrl, String method, String body) throws Exception {
+        String inputLine;
+        StringBuffer response=new StringBuffer();
+        JSONArray results=new JSONArray();
+
+        URL url = new URL(ipAdr+tragetUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setDoOutput(true);
+        con.setRequestMethod(method); // optional default is GETs
+        con.setRequestProperty("content-type", "application/json");// add request header
+        OutputStream os=con.getOutputStream();
+        os.write(body.getBytes());
+        os.flush();
+
+        int responseCode = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+        inputLine=in.readLine();
+        in.close();
+        if(inputLine.charAt(0)=='{') {
+            results.put(new JSONObject(inputLine));
+            return results;
+        }
+        return new JSONArray(inputLine);
+    }
 
 }
 

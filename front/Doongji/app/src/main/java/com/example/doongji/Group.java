@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,9 +30,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+class MyComparator implements Comparator<String> {
+    @Override
+    public int compare(String s1, String s2) {
+        return s1.compareTo(s2);
+    }
+}
 public class Group extends FragmentActivity implements OnMapReadyCallback {
 
     private JSONArray results;
@@ -96,14 +106,17 @@ public class Group extends FragmentActivity implements OnMapReadyCallback {
         Runnable r = new MyRunnable(group_id);
         Thread t = new Thread(r);
         t.start();
-        ArrayList<String> aryList = new ArrayList<>();
+        final ArrayList<String> aryList = new ArrayList<>();
         try {
             t.join();
 
             for (int i = 0; i < results.length(); i++) {
-                if (User.getName().compareTo(results.getJSONObject(i).get("user_name").toString()) != 0) {
-                    aryList.add(results.getJSONObject(i).get("user_name").toString());
+                if (User.getName().equals(results.getJSONObject(i).get("user_name").toString())) {
+                    results.remove(i);
+                    i--;
+                    continue;
                 }
+                aryList.add(results.getJSONObject(i).get("user_name").toString());
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -111,6 +124,7 @@ public class Group extends FragmentActivity implements OnMapReadyCallback {
             e.printStackTrace();
         }
 
+        Collections.sort(aryList,new MyComparator());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, R.layout.member_list, R.id.member_name, aryList
         );

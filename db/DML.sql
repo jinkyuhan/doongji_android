@@ -1,12 +1,12 @@
-INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user1','1234','user1');
-INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user2','1234','user2');
-INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user3','1234','user3');
-INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user4','1234','user4');
-INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user5','1234','user5');
-INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user6','1234','user6');
-INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user7','1234','user7');
-INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user8','1234','user8');
-INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user9','1234','user9');
+INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user1','1234','user01');
+INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user2','1234','user02');
+INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user3','1234','user03');
+INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user4','1234','user04');
+INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user5','1234','user05');
+INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user6','1234','user06');
+INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user7','1234','user07');
+INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user8','1234','user08');
+INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user9','1234','user09');
 INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user10','1234','user10');
 INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user11','1234','user11');
 INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user12','1234','user12');
@@ -30,7 +30,7 @@ INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user29','
 INSERT INTO DOONG_JI.members(User_id, User_pw, User_name) VALUES('test_user30','1234','user30');
 
 
-INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups1',0.0,0.0,500,'test_user1');
+INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups1',35.88,126.92,500,'test_user1');
 INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups2',0.0,0.0,1000,'test_user2');
 INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups3',0.0,0.0,500,'test_user3');
 INSERT INTO DOONG_JI.groups(Grp_name,Grp_xpos,Grp_ypos,Grp_radius,Grp_creator) VALUES('test_groups4',0.0,0.0,2000,'test_user4');

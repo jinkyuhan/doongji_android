@@ -1,10 +1,9 @@
 /*
 DROP TABLE DOONG_JI.belongs_tos;
-DROP TABLE DOONG_JI.members;
 DROP TABLE DOONG_JI.groups;
 DROP TABLE DOONG_JI.message_boxes;
+DROP TABLE DOONG_JI.members;
 */
-
 
 
 /*

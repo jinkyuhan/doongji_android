@@ -84,12 +84,12 @@ router.post('/:grp_id/:user_id', async function(req, res, next) {
 		console.log(`POST INSERT ROW TO BELONGSTO TABLE SUCCESS: ${newBelong}`);
 		res.json({
 			success: true,
-			newGroup: newBelong
+			newJoin: newBelong
 		});
 	} catch (err) {
 		res.json({
 			success: false,
-			newGroup: {}
+			newJoin: {}
 		});
 		console.log(`POST INSERT ROW TO BELONGSTO TABLE CONSTRAINT WARNINGS!`);
 	}

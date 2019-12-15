@@ -2,11 +2,9 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models/models');
 const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
 
+router.post('/:sender_id/:target_id',async function(req, res, next){
 
-/* Make message reservation */
-router.post('/:sender_id/messages/:target_id',async function(req, res, next){
 	try{
 		var newMsg = await models.Message_box.create({
 			msg_sender: req.params.sender_id,
@@ -22,6 +20,6 @@ router.post('/:sender_id/messages/:target_id',async function(req, res, next){
 	} catch (err) {
 		console.log(`! ERROR : cannot make message - ${err}`);
 	}
-});
+}); 
 
 module.exports = router;

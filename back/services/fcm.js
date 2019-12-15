@@ -1,5 +1,5 @@
 var admin = require('firebase-admin');
-var serviceAccount = require('./doongji-e3b61-firebase-adminsdk-4jwxq-2282b41d35');
+var serviceAccount = require('./doongji-e3b61-firebase-adminsdk-4jwxq-0c38dd4ab8');	// 서버 비밀 키
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)

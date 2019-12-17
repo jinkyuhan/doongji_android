@@ -23,6 +23,12 @@ public class Sign_upActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
     }
 
+    @Override
+    protected void onDestroy() {
+        User.clearMySubscribeTopics();
+        super.onDestroy();
+    }
+
     public void onClickButton(View view) {
 
         EditText id = (EditText) findViewById(R.id.Sign_up_id);

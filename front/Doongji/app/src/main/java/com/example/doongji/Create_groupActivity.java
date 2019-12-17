@@ -22,6 +22,12 @@ public class Create_groupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_group);
     }
 
+    @Override
+    protected void onDestroy() {
+        User.clearMySubscribeTopics();
+        super.onDestroy();
+    }
+
     public void onClickButton(View view) {
 
         EditText name = (EditText) findViewById(R.id.group_name);
@@ -73,4 +79,5 @@ public class Create_groupActivity extends AppCompatActivity {
         }
 
     }
+
 }

@@ -50,7 +50,11 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
+    }
+    @Override
+    protected void onDestroy() {
+        User.clearMySubscribeTopics();
+        super.onDestroy();
     }
 
 
@@ -118,10 +122,7 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
 //        }
 
         MemberAdapter adapter = new MemberAdapter(this, groupInstance.getMembers());
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-//                this, R.layout.member_list, R.id.member_name, memberList
-//        );
-//////////////////////이 밑에 itemClick listener부터 수정
+
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
@@ -129,12 +130,9 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Member member = (Member) adapterView.getItemAtPosition(i); // i : position
                         Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-                        intent.putExtra("sender_id", member.getId());
-//                        try {
-//                            intent.putExtra("send_mem_id", results.getJSONObject(i).get("user_id").toString());
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
+                        intent.putExtra("target_id", member.getId());
+                        intent.putExtra("target_name", member.getName());
+
                         Toast.makeText(GroupActivity.this, member.getName() + " selected", Toast.LENGTH_SHORT).show();
                         startActivity(intent);
                     }
@@ -180,6 +178,7 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
                                                 HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
                                                 try {
                                                     results = connecter.sendHttp("/api/groups/" + param.get(0) + "/" + param.get(1), "DELETE");
+                                                    User.unsubscribeMyGroupById(Integer.parseInt(param.get(0)));
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
@@ -233,4 +232,27 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
         }
     }
 
+    public void testClick(View view) {
+        class MyRunnable implements Runnable {
+            public MyRunnable() {
+            }
+
+            public void run() {
+                HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
+                try {
+                    results = connecter.sendHttp("/services/sentry/test_user2/come/1/public", "POST");
+                } catch (Exception e) {
+                    Log.i(TAG, "HTTP 요청 실패 " + e.getMessage());
+                }
+            }
+        }
+        Runnable r = new MyRunnable();
+        Thread t = new Thread(r);
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            Log.i(TAG, "비정상적인 쓰레드종료 " + e.getMessage());
+        }
+    }
 }

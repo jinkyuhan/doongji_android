@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class MessageActivity extends AppCompatActivity {
     private JSONArray results;
-    String member_id;
+    String target_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +26,17 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message);
 
         Intent intent = getIntent();
-        String member_name = intent.getExtras().getString("send_message_mem");
-        member_id = intent.getExtras().getString("send_mem_id");
+        String target_name = intent.getExtras().getString("target_name");
+        target_id = intent.getExtras().getString("target_id");
         TextView T = (TextView) findViewById(R.id.send_message_mem);
-        T.setText(member_name);
+        T.setText(target_name);
     }
 
+    @Override
+    protected void onDestroy() {
+        User.clearMySubscribeTopics();
+        super.onDestroy();
+    }
     public void onClickButton(View view) {
 
         EditText msg = (EditText) findViewById(R.id.send_message);
@@ -51,7 +56,7 @@ public class MessageActivity extends AppCompatActivity {
                 try {
                     JSONObject json=new JSONObject();
                     json.put("message",param.get(0));
-                    results = connecter.sendHttp("/api/messages/" + User.getId() + "/" + member_id, "POST",json.toString());
+                    results = connecter.sendHttp("/api/messages/" + User.getId() + "/" + target_id, "POST",json.toString());
 
                 } catch (Exception e) {
                     e.printStackTrace();

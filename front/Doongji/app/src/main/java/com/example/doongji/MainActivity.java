@@ -28,12 +28,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 구독
-        String topic = "testtest1";
-        FirebaseMessaging.getInstance().subscribeToTopic(topic);
-        // 구독 취소
-        //admin.messaging().unsubscribeFromTopic(registrationTokens, topic);
-
         Intent i = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(i);
         finish();

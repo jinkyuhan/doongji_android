@@ -72,4 +72,10 @@ public class Add_memberActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onDestroy() {
+        User.clearMySubscribeTopics();
+        super.onDestroy();
+    }
 }

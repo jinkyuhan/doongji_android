@@ -34,7 +34,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
         User.initialize();
     }
-
+    @Override
+    protected void onDestroy() {
+        User.clearMySubscribeTopics();
+        super.onDestroy();
+    }
     public void onClickButton(View view) {
 
         EditText id = (EditText) findViewById(R.id.ID_input);
@@ -80,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (results.length() != 0) {
                     try {
                         User.setInfo(results.getJSONObject(0).get("user_id").toString(), results.getJSONObject(0).get("user_name").toString());
+                        User.subscribeMyId();
                         Intent i = new Intent(LoginActivity.this, Group_indexActivity.class);
                         startActivity(i);
                     } catch (JSONException e) {

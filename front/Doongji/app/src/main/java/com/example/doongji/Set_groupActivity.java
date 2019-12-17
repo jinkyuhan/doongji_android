@@ -30,6 +30,11 @@ public class Set_groupActivity extends AppCompatActivity {
         group_id = intent.getExtras().getString("grp_id");
     }
 
+    @Override
+    protected void onDestroy() {
+        User.clearMySubscribeTopics();
+        super.onDestroy();
+    }
     public void onClickButton(View view) {
         EditText name = (EditText) findViewById(R.id.edit_group_name);
         EditText xpos = (EditText) findViewById(R.id.edit_group_xpos);

@@ -27,4 +27,5 @@ public class GroupAdapter extends ArrayAdapter {
 
         return convertView;
     }
+
 }

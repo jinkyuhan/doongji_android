@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,8 +33,20 @@ public class Group_indexActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        User.clearMySubscribeTopics();
+        super.onDestroy();
+    }
+    @Override
     protected void onResume() {
         super.onResume();
+
+        // 구독
+        //String topic = "test1";
+        //FirebaseMessaging.getInstance().subscribeToTopic(topic);
+        // 구독 취소
+        //FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+
         ListView listView = (ListView) findViewById(R.id.group_list);
         class MyRunnable implements Runnable {
             JSONArray groups;
@@ -51,6 +65,7 @@ public class Group_indexActivity extends AppCompatActivity {
                                 group.getDouble("grp_ypos")
                         ));
                     }
+                    User.subscribeMyGroups();
                 } catch (Exception e) {
                     Log.i(TAG, "HTTP 요청 실패 " + e.getMessage());
                 }

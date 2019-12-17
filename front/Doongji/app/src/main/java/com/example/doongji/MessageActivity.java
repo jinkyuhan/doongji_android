@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,9 +14,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class MessageActivity extends AppCompatActivity {
-    private JSONArray results;
+    private HttpTask conn = new HttpTask();
+    String target_name;
     String target_id;
 
     @Override
@@ -26,55 +27,25 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message);
 
         Intent intent = getIntent();
-        String target_name = intent.getExtras().getString("target_name");
+        target_name = intent.getExtras().getString("target_name");
         target_id = intent.getExtras().getString("target_id");
         TextView T = (TextView) findViewById(R.id.send_message_mem);
         T.setText(target_name);
     }
 
-    @Override
-    protected void onDestroy() {
-        User.clearMySubscribeTopics();
-        super.onDestroy();
-    }
     public void onClickButton(View view) {
+        String resultString= null;
+        String msg = ((EditText) findViewById(R.id.send_message)).getText().toString();
 
-        EditText msg = (EditText) findViewById(R.id.send_message);
-        ArrayList<String> array = new ArrayList<>();
-        array.add(msg.getText().toString());
-
-        class MyRunnable implements Runnable {
-            ArrayList<String> param;
-
-            public MyRunnable(ArrayList<String> parameter) {
-                this.param = parameter;
-            }
-
-            public void run() {
-                HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
-
-                try {
-                    JSONObject json=new JSONObject();
-                    json.put("message",param.get(0));
-                    results = connecter.sendHttp("/api/messages/" + User.getId() + "/" + target_id, "POST",json.toString());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-        }
-        Runnable r = new MyRunnable(array);
-        Thread t = new Thread(r);
-        t.start();
+        /* DB에 메세지 저장하기 */
         try {
-            t.join();
-        } catch (InterruptedException e) {
+            resultString = conn.execute("/api/messages/" + User.getToken() + "/" + target_id, "POST", msg).get();
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         try {
-            if (((Boolean) results.getJSONObject(0).get("success")).booleanValue()) {
+            JSONArray results = new JSONArray(resultString);
+            if ((Boolean) results.getJSONObject(0).get("success")) {
                 Toast.makeText(MessageActivity.this, "전송 완료", Toast.LENGTH_SHORT).show();
                 finish();
             } else {

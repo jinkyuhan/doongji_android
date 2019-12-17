@@ -7,13 +7,15 @@ public class Group {
     private String name;
     private double xpos;
     private double ypos;
+    private int radius;
     private ArrayList<Member> members = new ArrayList<Member>();
 
-    public Group(int id, String name, double xpos, double ypos) {
+    public Group(int id, String name, double xpos, double ypos, int radius) {
         this.id = id;
         this.name = name;
         this.xpos = xpos;
         this.ypos = ypos;
+        this.radius = radius;
     }
 
     public int getId(){

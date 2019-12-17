@@ -14,7 +14,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCdhpJM8gwWdPEKTYeFagza5sFR8sMf1Gw"/>
-        <activity android:name=".Sign_upActivity"/>
+
         <activity android:name=".Set_groupActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".Group_indexActivity" />

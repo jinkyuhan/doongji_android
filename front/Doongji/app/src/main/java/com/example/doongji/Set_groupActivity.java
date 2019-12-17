@@ -4,75 +4,46 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class Set_groupActivity extends AppCompatActivity {
-
+    private HttpTask conn = new HttpTask();
     private JSONArray results;
-    String group_id;
+    int group_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_group);
-
         Intent intent = getIntent();
-        group_id = intent.getExtras().getString("grp_id");
+        group_id = intent.getExtras().getInt("grp_id");
     }
 
-    @Override
-    protected void onDestroy() {
-        User.clearMySubscribeTopics();
-        super.onDestroy();
-    }
     public void onClickButton(View view) {
-        EditText name = (EditText) findViewById(R.id.edit_group_name);
-        EditText xpos = (EditText) findViewById(R.id.edit_group_xpos);
-        EditText ypos = (EditText) findViewById(R.id.edit_group_ypos);
-        Spinner spi = (Spinner) findViewById(R.id.spinner1);
+        String resultString = null;
+        String name = ((EditText)findViewById(R.id.edit_group_name)).getText().toString();
+        String xpos = ((EditText)findViewById(R.id.edit_group_xpos)).getText().toString();
+        String ypos = ((EditText)findViewById(R.id.edit_group_ypos)).getText().toString();
+        String selectedItem = ((Spinner) findViewById(R.id.spinner1)).getSelectedItem().toString();
 
-        ArrayList<String> array = new ArrayList<>();
-        array.add(name.getText().toString());
-        array.add(xpos.getText().toString());
-        array.add(ypos.getText().toString());
-        array.add(spi.getSelectedItem().toString());
-
-        class MyRunnable implements Runnable {
-            ArrayList<String> param;
-
-            public MyRunnable(ArrayList<String> parameter) {
-                this.param = parameter;
-            }
-
-            public void run() {
-                HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
-                try {
-                    results = connecter.sendHttp("/api/groups/" + group_id + "/" + param.get(0) + "/" + param.get(1) + "/" + param.get(2) +"/"+param.get(3), "PUT");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        Runnable r = new MyRunnable(array);
-        Thread t = new Thread(r);
-        t.start();
         try {
-            t.join();
-        } catch (InterruptedException e) {
+            resultString = conn.execute("/api/groups/" + group_id + "/" + name + "/" + xpos + "/" + ypos +"/"+selectedItem, "PUT", null).get();
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         try {
-            if (((Boolean) results.getJSONObject(0).get("success")).booleanValue()) {
+            JSONObject result = new JSONObject(resultString);
+            if (result.getBoolean("success")) {
                 Toast.makeText(Set_groupActivity.this, "그룹정보가 성공적으로 변경되었습니다..", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
@@ -84,6 +55,5 @@ public class Set_groupActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 }

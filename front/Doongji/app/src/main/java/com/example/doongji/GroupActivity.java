@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,10 +24,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.concurrent.ExecutionException;
 
 class MyComparator implements Comparator<String> {
     @Override
@@ -39,8 +39,10 @@ class MyComparator implements Comparator<String> {
 
 public class GroupActivity extends FragmentActivity implements OnMapReadyCallback {
     final private String TAG = "GroupActivity";
-    private JSONArray results;
+    private HttpTask conn;
+
     private Group groupInstance;
+
     LatLng Doong_ji;
     MarkerOptions marker;
     SupportMapFragment mapFragment;
@@ -51,12 +53,6 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_group);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
     }
-    @Override
-    protected void onDestroy() {
-        User.clearMySubscribeTopics();
-        super.onDestroy();
-    }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -69,58 +65,49 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     protected void onResume() {
+        String resultString = null;
+
         super.onResume();
+
+        /* 이전 액티비티로 현재창 그룹 인스턴스 초기화*/
         this.groupInstance = User.getGroupById(getIntent().getExtras().getInt("grp_id"));
 
+        /* Group Name 렌더링 */
         TextView textView_groupName = (TextView) findViewById(R.id.group_name);
         textView_groupName.setText(groupInstance.getName());
 
+        /* 지도 렌더링 */
         mapFragment.getMapAsync(this);
-        ListView listView = (ListView) findViewById(R.id.group);
 
-        class MyRunnable implements Runnable {
-            public MyRunnable() {
-            }
+        /* 그룹의 멤버 받아오기 */
+        Log.i("hoool", Integer.toString(groupInstance.getId()));
+        try {
+            conn = new HttpTask();
+            resultString = conn.execute("/api/groups/" + groupInstance.getId() + "/members", "GET", null).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
-            public void run() {
-                HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
-                try {
-                    results = connecter.sendHttp("/api/groups/" + groupInstance.getId() + "/members", "GET");
-                    groupInstance.clearMember();
-                    for (int i = 0; i < results.length(); i++) {
-                        if (!results.getJSONObject(i).getString("user_id").equals(User.getId())) {
-                            groupInstance.addMember(new Member(
-                                    results.getJSONObject(i).getString("user_id"),
-                                    results.getJSONObject(i).getString("user_name")
-                            ));
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.i(TAG, "HTTP 요청 실패 " + e.getMessage());
+        /* 받아온 멤버로 멤버 리스트 채우기 */
+        JSONArray results = null;
+        try {
+            Log.i("opoppop", resultString);
+            results = new JSONArray(resultString);
+            groupInstance.clearMember();
+            for (int i = 0; i < results.length(); i++) {
+                if (!results.getJSONObject(i).getString("token").equals(User.getToken())) {
+                    groupInstance.addMember(new Member(
+                            results.getJSONObject(i).getString("token"),
+                            results.getJSONObject(i).getString("user_name")
+                    ));
                 }
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        Runnable r = new MyRunnable();
-        Thread t = new Thread(r);
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            Log.i(TAG, "비정상적인 쓰레드종료 " + e.getMessage());
-        }
-//
-//        ArrayList<String> memberList = new ArrayList<>();
-//        try {
-//            t.join();
-//            for (Member member : groupInstance.getMembers()) {
-//                if (!member.getId().equals(User.getId())) {
-//                    memberList.add(member.getName());
-//                }
-//            }
-//        } catch (InterruptedException e) {
-//            Log.i(TAG, "비정상적인 쓰레드종료 " + e.getMessage());
-//        }
 
+        /* 리스트뷰 세팅 */
+        ListView listView = (ListView) findViewById(R.id.group);
         MemberAdapter adapter = new MemberAdapter(this, groupInstance.getMembers());
 
         listView.setAdapter(adapter);
@@ -130,7 +117,7 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Member member = (Member) adapterView.getItemAtPosition(i); // i : position
                         Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-                        intent.putExtra("target_id", member.getId());
+                        intent.putExtra("target_id", member.getToken());
                         intent.putExtra("target_name", member.getName());
 
                         Toast.makeText(GroupActivity.this, member.getName() + " selected", Toast.LENGTH_SHORT).show();
@@ -142,9 +129,10 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
     }
 
     public void onClickButton(View v) {
+
         final ArrayList<String> array = new ArrayList<>();
-        array.add(Integer.toString(groupInstance.getId()));
-        array.add(User.getId());
+        array.add(Integer.toString(groupInstance.getId())); // group_id
+        array.add(User.getToken()); //user token
         switch (v.getId()) {
             case R.id.Option_btn:
                 DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -167,47 +155,23 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
                         .setPositiveButton("예", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface arg0, int arg1) {
-                                        class MyRunnable implements Runnable {
-                                            ArrayList<String> param;
+                                        String resultString = null;
 
-                                            public MyRunnable(ArrayList<String> parameter) {
-                                                this.param = parameter;
-                                            }
-
-                                            public void run() {
-                                                HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
-                                                try {
-                                                    results = connecter.sendHttp("/api/groups/" + param.get(0) + "/" + param.get(1), "DELETE");
-                                                    User.unsubscribeMyGroupById(Integer.parseInt(param.get(0)));
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        }
-                                        Runnable r = new MyRunnable(array);
-                                        Thread t = new Thread(r);
-                                        t.start();
                                         try {
-                                            t.join();
-                                        } catch (InterruptedException e) {
-                                            Log.i(TAG, "비정상적인 쓰레드종료 " + e.getMessage());
+                                            conn = new HttpTask();
+                                            resultString = conn.execute("/api/groups/" + groupInstance.getId() + "/" + User.getToken(), "DELETE", null).get();
+                                        } catch (ExecutionException | InterruptedException e) {
+                                            e.printStackTrace();
                                         }
-                                        try {
-                                            if (((Boolean) results.getJSONObject(0).get("success")).booleanValue()) {
-                                                runOnUiThread(new Runnable() {
-                                                    public void run() {
-                                                        Toast.makeText(GroupActivity.this, "둥지를 나갔습니다.", Toast.LENGTH_SHORT).show();
-                                                        finish();
-                                                    }
-                                                });
 
+                                        try {
+                                            JSONObject results = new JSONObject(resultString);
+                                            if (results.getBoolean("success")) {
+                                                Toast.makeText(GroupActivity.this, "둥지를 나갔습니다.", Toast.LENGTH_SHORT).show();
+                                                finish();
                                             } else {
-                                                runOnUiThread(new Runnable() {
-                                                    public void run() {
-                                                        Toast.makeText(GroupActivity.this, "둥지를 나가기에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                                                        finish();
-                                                    }
-                                                });
+                                                Toast.makeText(GroupActivity.this, "둥지를 나가기에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                                finish();
                                             }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
@@ -233,26 +197,7 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
     }
 
     public void testClick(View view) {
-        class MyRunnable implements Runnable {
-            public MyRunnable() {
-            }
-
-            public void run() {
-                HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
-                try {
-                    results = connecter.sendHttp("/services/sentry/test_user2/come/1/public", "POST");
-                } catch (Exception e) {
-                    Log.i(TAG, "HTTP 요청 실패 " + e.getMessage());
-                }
-            }
-        }
-        Runnable r = new MyRunnable();
-        Thread t = new Thread(r);
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            Log.i(TAG, "비정상적인 쓰레드종료 " + e.getMessage());
-        }
+        conn = new HttpTask();
+        conn.execute("/services/sentry/test_user2/come/1/public", "POST", null);
     }
 }

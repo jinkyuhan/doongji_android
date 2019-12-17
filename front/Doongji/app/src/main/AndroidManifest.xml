@@ -14,14 +14,14 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCdhpJM8gwWdPEKTYeFagza5sFR8sMf1Gw"/>
-        <activity android:name=".Sign_up"></activity>
-        <activity android:name=".Set_group" />
-        <activity android:name=".Login" />
-        <activity android:name=".Group_index" />
-        <activity android:name=".Message" />
-        <activity android:name=".Group" />
-        <activity android:name=".Create_group" />
-        <activity android:name=".Add_member" />
+        <activity android:name=".Sign_upActivity"/>
+        <activity android:name=".Set_groupActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".Group_indexActivity" />
+        <activity android:name=".MessageActivity" />
+        <activity android:name=".GroupActivity" />
+        <activity android:name=".Create_groupActivity" />
+        <activity android:name=".Add_memberActivity" />
         <activity android:name=".MainActivity">
 
             <intent-filter>

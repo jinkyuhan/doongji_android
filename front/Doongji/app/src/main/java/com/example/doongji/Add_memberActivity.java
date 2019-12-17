@@ -4,11 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -16,7 +13,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class Set_group extends AppCompatActivity {
+public class Add_memberActivity extends AppCompatActivity {
 
     private JSONArray results;
     String group_id;
@@ -24,23 +21,18 @@ public class Set_group extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_group);
+        setContentView(R.layout.activity_add_member);
 
         Intent intent = getIntent();
         group_id = intent.getExtras().getString("grp_id");
     }
 
     public void onClickButton(View view) {
-        EditText name = (EditText) findViewById(R.id.edit_group_name);
-        EditText xpos = (EditText) findViewById(R.id.edit_group_xpos);
-        EditText ypos = (EditText) findViewById(R.id.edit_group_ypos);
-        Spinner spi = (Spinner) findViewById(R.id.spinner1);
+
+        EditText name = (EditText) findViewById(R.id.add_member_name);
 
         ArrayList<String> array = new ArrayList<>();
         array.add(name.getText().toString());
-        array.add(xpos.getText().toString());
-        array.add(ypos.getText().toString());
-        array.add(spi.getSelectedItem().toString());
 
         class MyRunnable implements Runnable {
             ArrayList<String> param;
@@ -52,7 +44,8 @@ public class Set_group extends AppCompatActivity {
             public void run() {
                 HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
                 try {
-                    results = connecter.sendHttp("/api/groups/" + group_id + "/" + param.get(0) + "/" + param.get(1) + "/" + param.get(2) +"/"+param.get(3), "PUT");
+                    results = connecter.sendHttp("/api/groups/" + group_id + "/" + param.get(0), "POST");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -68,13 +61,11 @@ public class Set_group extends AppCompatActivity {
         }
         try {
             if (((Boolean) results.getJSONObject(0).get("success")).booleanValue()) {
-                Toast.makeText(Set_group.this, "그룹정보가 성공적으로 변경되었습니다..", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Add_memberActivity.this, "멤버가 추가되었습니다.", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
-                Toast.makeText(Set_group.this, "그룹정보 변경에 실패하였습니다..", Toast.LENGTH_SHORT).show();
-                ((EditText) findViewById(R.id.edit_group_name)).setText(null);
-                ((EditText) findViewById(R.id.edit_group_xpos)).setText(null);
-                ((EditText) findViewById(R.id.edit_group_ypos)).setText(null);
+                Toast.makeText(Add_memberActivity.this, "멤버 추가에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                ((EditText) findViewById(R.id.add_member_name)).setText(null);
             }
         } catch (JSONException e) {
             e.printStackTrace();

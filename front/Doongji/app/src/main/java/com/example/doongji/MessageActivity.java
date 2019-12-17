@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class MessageActivity extends AppCompatActivity {
-    private HttpTask conn = new HttpTask();
+    private HttpTask conn;
     String target_name;
     String target_id;
 
@@ -39,8 +39,13 @@ public class MessageActivity extends AppCompatActivity {
 
         /* DB에 메세지 저장하기 */
         try {
-            resultString = conn.execute("/api/messages/" + User.getToken() + "/" + target_id, "POST", msg).get();
+            conn = new HttpTask();
+            JSONObject body  = new JSONObject();
+            body.put("message",msg);
+            resultString = conn.execute("/api/messages/" + User.getToken() + "/" + target_id, "POST", body.toString()).get();
         } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         try {

@@ -62,6 +62,7 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(Doong_ji));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -74,17 +75,21 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
         ListView listView = (ListView) findViewById(R.id.group);
 
         class MyRunnable implements Runnable {
-            public MyRunnable() { }
+            public MyRunnable() {
+            }
+
             public void run() {
                 HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
                 try {
                     results = connecter.sendHttp("/api/groups/" + groupInstance.getId() + "/members", "GET");
                     groupInstance.clearMember();
-                    for(int i = 0 ; i < results.length(); i++){
-                        groupInstance.addMember(new Member(
-                                results.getJSONObject(i).getString("user_id"),
-                                results.getJSONObject(i).getString("user_name")
-                        ));
+                    for (int i = 0; i < results.length(); i++) {
+                        if (!results.getJSONObject(i).getString("user_id").equals(User.getId())) {
+                            groupInstance.addMember(new Member(
+                                    results.getJSONObject(i).getString("user_id"),
+                                    results.getJSONObject(i).getString("user_name")
+                            ));
+                        }
                     }
                 } catch (Exception e) {
                     Log.i(TAG, "HTTP 요청 실패 " + e.getMessage());
@@ -94,39 +99,43 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
         Runnable r = new MyRunnable();
         Thread t = new Thread(r);
         t.start();
-
-        ArrayList<String> memberList = new ArrayList<>();
         try {
             t.join();
-            for (Member member : groupInstance.getMembers()){
-                if(!member.getId().equals(User.getId())){
-                    memberList.add(member.getName());
-                }
-            }
         } catch (InterruptedException e) {
             Log.i(TAG, "비정상적인 쓰레드종료 " + e.getMessage());
         }
+//
+//        ArrayList<String> memberList = new ArrayList<>();
+//        try {
+//            t.join();
+//            for (Member member : groupInstance.getMembers()) {
+//                if (!member.getId().equals(User.getId())) {
+//                    memberList.add(member.getName());
+//                }
+//            }
+//        } catch (InterruptedException e) {
+//            Log.i(TAG, "비정상적인 쓰레드종료 " + e.getMessage());
+//        }
 
-        Collections.sort(memberList, new MyComparator());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, R.layout.member_list, R.id.member_name, memberList
-        );
+        MemberAdapter adapter = new MemberAdapter(this, groupInstance.getMembers());
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+//                this, R.layout.member_list, R.id.member_name, memberList
+//        );
 //////////////////////이 밑에 itemClick listener부터 수정
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        String item = (String) adapterView.getItemAtPosition(i); // i : position
+                        Member member = (Member) adapterView.getItemAtPosition(i); // i : position
                         Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-
-                        intent.putExtra("send_message_mem", item);
-                        try {
-                            intent.putExtra("send_mem_id", results.getJSONObject(i).get("user_id").toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Toast.makeText(GroupActivity.this, item + " selected", Toast.LENGTH_SHORT).show();
+                        intent.putExtra("sender_id", member.getId());
+//                        try {
+//                            intent.putExtra("send_mem_id", results.getJSONObject(i).get("user_id").toString());
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+                        Toast.makeText(GroupActivity.this, member.getName() + " selected", Toast.LENGTH_SHORT).show();
                         startActivity(intent);
                     }
                 }
@@ -136,22 +145,21 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
 
     public void onClickButton(View v) {
         final ArrayList<String> array = new ArrayList<>();
-        array.add(group_id);
+        array.add(Integer.toString(groupInstance.getId()));
         array.add(User.getId());
         switch (v.getId()) {
             case R.id.Option_btn:
-                //OpenDrawer 출처 https://g-y-e-o-m.tistory.com/128
                 DrawerLayout drawer = findViewById(R.id.drawer_layout);
                 drawer.openDrawer(GravityCompat.END);
                 break;
             case R.id.Add_member_btn:
                 Intent i2 = new Intent(GroupActivity.this, Add_memberActivity.class);
-                i2.putExtra("grp_id", group_id);
+                i2.putExtra("grp_id", groupInstance.getId());
                 startActivity(i2);
                 break;
             case R.id.Group_setting_btn:
                 Intent i3 = new Intent(GroupActivity.this, Set_groupActivity.class);
-                i3.putExtra("grp_id", group_id);
+                i3.putExtra("grp_id", groupInstance.getId());
                 startActivity(i3);
                 break;
             case R.id.Group_exit_btn:
@@ -171,7 +179,7 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
                                             public void run() {
                                                 HttpConnection connecter = new HttpConnection(getString(R.string.IPAd));
                                                 try {
-                                                    results = connecter.sendHttp("/api/groups/" + param.get(0) + "/" + param.get(1) , "DELETE");
+                                                    results = connecter.sendHttp("/api/groups/" + param.get(0) + "/" + param.get(1), "DELETE");
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
@@ -183,20 +191,24 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
                                         try {
                                             t.join();
                                         } catch (InterruptedException e) {
-                                            e.printStackTrace();
+                                            Log.i(TAG, "비정상적인 쓰레드종료 " + e.getMessage());
                                         }
                                         try {
                                             if (((Boolean) results.getJSONObject(0).get("success")).booleanValue()) {
-                                                runOnUiThread(new Runnable() { public void run() {
-                                                    Toast.makeText(GroupActivity.this, "둥지를 나갔습니다.", Toast.LENGTH_SHORT).show();
-                                                    finish();
-                                                } });
+                                                runOnUiThread(new Runnable() {
+                                                    public void run() {
+                                                        Toast.makeText(GroupActivity.this, "둥지를 나갔습니다.", Toast.LENGTH_SHORT).show();
+                                                        finish();
+                                                    }
+                                                });
 
                                             } else {
-                                                runOnUiThread(new Runnable() { public void run() {
-                                                    Toast.makeText(GroupActivity.this, "둥지를 나가기에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                                                    finish();
-                                                } });
+                                                runOnUiThread(new Runnable() {
+                                                    public void run() {
+                                                        Toast.makeText(GroupActivity.this, "둥지를 나가기에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                                        finish();
+                                                    }
+                                                });
                                             }
                                         } catch (JSONException e) {
                                             e.printStackTrace();

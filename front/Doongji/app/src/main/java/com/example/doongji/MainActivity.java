@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +28,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent i = new Intent(MainActivity.this,LoginActivity.class);
+        // 구독
+        String topic = "testtest1";
+        FirebaseMessaging.getInstance().subscribeToTopic(topic);
+        // 구독 취소
+        //admin.messaging().unsubscribeFromTopic(registrationTokens, topic);
+
+        Intent i = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(i);
         finish();
     }

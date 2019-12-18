@@ -1,4 +1,7 @@
 back/node_modules
+*.log
+./goorm.manifest
+./back/services/*.json
 *.iml
 .gradle
 /local.properties

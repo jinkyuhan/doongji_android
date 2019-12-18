@@ -198,6 +198,6 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
 
     public void testClick(View view) {
         conn = new HttpTask();
-        conn.execute("/services/sentry/test_user2/come/1/public", "POST", null);
+        conn.execute("/services/sentry/"+User.getToken()+"/come/"+groupInstance.getId()+"/public", "POST", null);
     }
 }

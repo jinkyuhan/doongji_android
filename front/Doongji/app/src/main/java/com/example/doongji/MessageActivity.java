@@ -49,9 +49,9 @@ public class MessageActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         try {
-            JSONArray results = new JSONArray(resultString);
-            if ((Boolean) results.getJSONObject(0).get("success")) {
-                Toast.makeText(MessageActivity.this, "전송 완료", Toast.LENGTH_SHORT).show();
+            JSONObject results = new JSONObject(resultString);
+            if (results.getBoolean("success")) {
+                Toast.makeText(MessageActivity.this, "전송 예약 완료", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 Toast.makeText(MessageActivity.this, "전송 실패", Toast.LENGTH_SHORT).show();

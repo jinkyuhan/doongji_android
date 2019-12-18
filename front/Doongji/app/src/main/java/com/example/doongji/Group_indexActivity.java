@@ -62,6 +62,8 @@ public class Group_indexActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        LocationManage locationManager=new LocationManage(getApplicationContext());
+        locationManager.setGroupList(User.getMyGroups());
 
         GroupAdapter adapter = new GroupAdapter(this, User.getMyGroups());
 

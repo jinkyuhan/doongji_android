@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Doongji</string>
+    <string name="IPAd">http://192.168.0.18:3000</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

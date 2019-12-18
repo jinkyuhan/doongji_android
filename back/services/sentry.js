@@ -14,11 +14,28 @@ router.post('', async function (req, res, next) {
 router.post('/:token/come/:grp_id/public', async function (req, res, next) {
 	try {
 		//notification
-		var query = `SELECT * FROM belongs_views WHERE grp_id=${req.params.grp_id}`;
-		var otherMembers = await models.sequelize.query(query,{
+		var invader = await models.Member.findOne({
+			where: {
+				token: req.params.token
+			}
+		});
+		var query = `SELECT * FROM Belongs_View WHERE grp_id=${req.params.grp_id}`;
+		var otherMembers = await models.sequelize.query(query, {
 			type: Sequelize.QueryTypes.SELECT,
 			raw: true
 		});
+		console.log("OtherMembers IS :::"+otherMembers);
+		var tokens_of_otherMembers = [];
+		for (var member in otherMembers) {
+			if (otherMembers[member].token != req.params.token)
+				tokens_of_otherMembers.push(otherMembers[member].token);
+		}
+
+
+		if (tokens_of_otherMembers.length != 0) {
+			fcm.sendMessageToManyTokens(invader.user_name, `현재 ${otherMembers[0].grp_name}에 근접하였습니다.`, tokens_of_otherMembers);
+		}
+
 
 		//message
 		var unreadMessages = await mailbox.getUnreadMessages(req.params.grp_id, req.params.token);

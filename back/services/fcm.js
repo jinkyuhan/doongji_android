@@ -24,4 +24,23 @@ admin.sendMessageToOneToken = async function (_title, _message, _token) {
 	}
 }
 
+admin.sendMessageToManyTokens = async function (_title, _message, _tokens) {
+	var message = {
+		notification: {
+			title: _title,
+			body: _message
+		},
+		tokens: _tokens
+	};
+
+	try {
+		result = admin.messaging().sendMulticast(message);
+		result.then(response =>
+			console.log(`Successfully sent message: ${response}`));
+
+	} catch (err) {
+		console.log(`Erorr sending message: ${err}`);
+	}
+}
+
 module.exports = admin;

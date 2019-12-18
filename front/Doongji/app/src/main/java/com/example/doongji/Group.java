@@ -7,6 +7,9 @@ public class Group {
     private String name;
     private double xpos;
     private double ypos;
+
+
+
     private int radius;
     private ArrayList<Member> members = new ArrayList<Member>();
 
@@ -24,7 +27,9 @@ public class Group {
     public String getName() {
         return name;
     }
-
+    public int getRadius() {
+        return radius;
+    }
     public void setName(String name) {
         this.name = name;
     }

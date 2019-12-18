@@ -12,6 +12,8 @@ public class User {
     private static String token;
 
     private static ArrayList<Group> myGroups = new ArrayList<Group>();
+    private static ArrayList<Boolean> accessList=new ArrayList<>();
+
 
     public static String getToken() {
         return token;
@@ -34,6 +36,15 @@ public class User {
     public static ArrayList<Group> getMyGroups() {
         return myGroups;
     }
+
+    public static ArrayList<Boolean> getAccessList() {
+        return accessList;
+    }
+
+    public static void setAccessList(ArrayList<Boolean> accessList) {
+        User.accessList = accessList;
+    }
+
     public static void clearMygroups() {
         myGroups.clear();
     }

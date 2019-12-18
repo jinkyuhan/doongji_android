@@ -7,7 +7,7 @@ const Op = Sequelize.Op;
 
 /*READ*/
 /* GET MEMBERS */
-router.get('/', async function(req, res, next) {
+router.get('/', async function (req, res, next) {
 	try {
 		var members = await models.Member.findAll();
 		res.json(members);
@@ -17,96 +17,78 @@ router.get('/', async function(req, res, next) {
 	}
 });
 
-/*GET A MEMBER BY USER_ID*/
-router.get('/:user_id', async function(req, res, next) {
+/*GET A MEMBER BY token*/
+router.get('/isDup', async function (req, res, next) {
 	// BY MEM_ID
 	try {
 		var theMember = await models.Member.findOne({
 			where: {
-				user_id: String(req.params.user_id)
+				token: String(req.query.token)
 			}
 		});
-		
-		console.log(`GET A MEMBER BY USER_ID RESPONSE: ${theMember}`);
-		res.json(theMember);
+		res.send(theMember);
+		console.log(`GET A MEMBER BY TOKEN RESPONSE: ${theMember}`);
 	} catch (err) {
-		console.log(`GET THE MEMBER (BY ID) ERROR!!! : ${res}`);
+		console.log(`GET THE MEMBER (BY TOKEN) ERROR!!! : ${theMember}`);
 	}
 });
 
-/*GET A MEMBER BY USER_ID & USER_PW*/
-router.get('/:user_id/:user_pw', async function(req, res, next) {
-	// BY ID & PW
-	try {
-		var members = await models.Member.findAll({
-			where: {
-				user_id: {
-					[Op.eq]: String(req.params.user_id)
-				},
-				user_pw: {
-					[Op.eq]: String(req.params.user_pw)
-				}
-			}
-		});
-		res.json(members);
-		console.log(`GET MEMBERS (by user_id & user_pw) RESPONSE : ${members}`);
-	} catch (err) {
-		console.log(`GET MEMBERS (by user_id & user_pw) ERROR!!! : ${err}`);
-	}
-});
-/*GET A GROUP BY USER_ID*/
-router.get('/:user_id/belongs/groups', async function(req, res, next) {
+// /*GET A MEMBER BY token & USER_PW*/
+// router.get('/:token/:user_pw', async function (req, res, next) {
+// 	// BY ID & PW
+// 	try {
+// 		var members = await models.Member.findAll({
+// 			where: {
+// 				token: {
+// 					[Op.eq]: String(req.params.token)
+// 				},
+// 				user_pw: {
+// 					[Op.eq]: String(req.params.user_pw)
+// 				}
+// 			}
+// 		});
+// 		res.json(members);
+// 		console.log(`GET MEMBERS (by token & user_pw) RESPONSE : ${members}`);
+// 	} catch (err) {
+// 		console.log(`GET MEMBERS (by token & user_pw) ERROR!!! : ${err}`);
+// 	}
+// });
+/*GET A GROUP BY token*/
+router.get('/:token/belongs/groups', async function (req, res, next) {
 	try {
 		var query = `
 				SELECT grp_id, grp_name, grp_xpos, grp_ypos, grp_radius 
 				FROM Belongs_View 
-				WHERE user_id = '${req.params.user_id}'
+				WHERE token = '${req.params.token}'
 		`;
 		var ownGroups = await models.sequelize.query(query, {
 			type: Sequelize.QueryTypes.SELECT,
 			raw: true
 		});
-		console.log(`GET A GROUP BY USER_ID RESPONSE: ${ownGroups}`);
+		console.log(`GET A GROUP BY token RESPONSE: ${ownGroups}`);
 		res.json(ownGroups);
 	} catch (err) {
-		console.log(`GET A GROUP BY USER_ID ERROR: ${err}`);
+		console.log(`GET A GROUP BY token ERROR: ${err}`);
 	}
 });
 
 
 /*CREATE*/
 /* POST NEW MEMBER */
-router.post('/:user_id/:user_pw/:user_name', async function(req, res, next) {
+router.post('/add', async function (req, res, next) {
 	try {
-		var dupMemberCount = await models.Member.count({
-			where: {
-				user_id: String(req.params.user_id)
-			}
+		var newMember = await models.Member.create({
+			token: req.body.token,
+			user_name: req.body.user_name
 		});
-		if (dupMemberCount === 0) {
-			try {
-				var newMember = await models.Member.create({
-					user_id: req.params.user_id,
-					user_pw: req.params.user_pw,
-					user_name: req.params.user_name
-				});
-				res.json({
-					success: true,
-					newMember: newMember
-				});				
-				console.log(`POST INSERT ROW TO MEMBER TABLE RESPONSE: ${newMember}`);
-			} catch (err) {
-				console.log(`POST INSERT ROW TO MEMBERS TABLE ERROR!!!: ${err}`);
-			}
-		} else {
-			console.log('POST INSERT ROW TO MEMBER TABLE RESPONSE: EMPTY MEMBER');
-			res.json({
-				success: false,
-				newMember: {}
-			});
-		}
-	} catch (err) {
-		console.log(`POST NEW MEMBER ERROR!!!: ${err}`);
+		console.log(req.body.token);
+		console.log(req.body.user_id);
+		res.json({
+			success: true,
+			newMember: newMember
+		});
+	} catch (err){
+		console.log(`POST NEW USER ERROR: ${err}`);
 	}
 });
 

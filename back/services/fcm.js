@@ -5,13 +5,13 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
-admin.sendMessageToTopic = async function (_title, _message, _topic) {
+admin.sendMessageToOneToken = async function (_title, _message, _token) {
 	var message = {
 		notification: {
 			title: _title,
 			body: _message
 		},
-		topic: _topic
+		token: _token
 	};
 
 	try {

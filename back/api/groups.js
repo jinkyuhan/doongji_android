@@ -36,7 +36,7 @@ router.get('/:grp_id/members', async function(req, res, next) {
 	// BY GRP ID
 	try {
 		var query = `
-				SELECT user_id, user_name 
+				SELECT token, user_name 
 				FROM Belongs_View 
 				WHERE grp_id = ${req.params.grp_id}
 		`;
@@ -62,24 +62,32 @@ router.post('/:grp_name/:grp_xpos/:grp_ypos/:grp_creator', async function(req, r
 			grp_creator: req.params.grp_creator
 		});
 		await models.Belongs_to.create({
-			user_id: req.params.grp_creator,
+			token: req.params.grp_creator,
 			grp_id: newGroup.grp_id
 		});
 		console.log(`POST INSERT ROW TO GROUPS TABLE SUCCESS: ${newGroup}`);
-		res.json({
-			success: true,
-			newGroup: newGroup
-		});
+		res.send("true");
 	} catch (err) {
-		console.log(`DB INSERT ROW TO GROUPS TABLE ERROR!: ${err}`);
+		console.log(`POST INSERT ROW TO GROUPS TABLE ERROR!: ${err}`);
+		res.send("false");
 	}
 });
 /*POST NEW MEMBER */
-router.post('/:grp_id/:user_id', async function(req, res, next) {
+router.post('/:grp_id/:user_name', async function(req, res, next) {
 	try {
-		var newBelong = await models.Belongs_to.create({
-			user_id: req.params.user_id,
-			grp_id: req.params.grp_id
+		var query = `SELECT * FROM members WHERE user_name='${req.params.user_name}'`;
+		var myToken = await models.sequelize.query(query,{
+			type: Sequelize.QueryTypes.SELECT,
+			raw: true
+		});
+		console.log(myToken[0].token);
+		query = `
+				INSERT INTO belongs_tos (token, grp_id)
+				VALUES ( '${myToken[0].token}', ${req.params.grp_id})
+		`;
+		var newBelong = await models.sequelize.query(query, {
+			type: Sequelize.QueryTypes.INSERT,
+			raw: true
 		});
 		console.log(`POST INSERT ROW TO BELONGSTO TABLE SUCCESS: ${newBelong}`);
 		res.json({
@@ -91,7 +99,7 @@ router.post('/:grp_id/:user_id', async function(req, res, next) {
 			success: false,
 			newJoin: {}
 		});
-		console.log(`POST INSERT ROW TO BELONGSTO TABLE CONSTRAINT WARNINGS!`);
+		console.log(`POST INSERT ROW TO BELONGSTO TABLE ERROR!: ${err}`);
 	}
 });
 /*UPDATE*/
@@ -123,12 +131,12 @@ router.put('/:grp_id/:grp_name/:grp_xpos/:grp_ypos/:grp_radius', async function(
 });
 
 /*DELETE*/
-router.delete('/:grp_id/:user_id', async function(req, res, next) {
+router.delete('/:grp_id/:token', async function(req, res, next) {
 	try {
 		var deletedCount = await models.Belongs_to.destroy({
 			where: {
 				grp_id: req.params.grp_id,
-				user_id: req.params.user_id
+				token: req.params.token
 			}
 		});
 		res.json({

@@ -4,7 +4,6 @@ var models = require('../models/models');
 const Sequelize = require('sequelize');
 
 router.post('/:sender_id/:target_id',async function(req, res, next){
-
 	try{
 		var newMsg = await models.Message_box.create({
 			msg_sender: req.params.sender_id,
@@ -19,6 +18,10 @@ router.post('/:sender_id/:target_id',async function(req, res, next){
 		})
 	} catch (err) {
 		console.log(`! ERROR : cannot make message - ${err}`);
+		res.json({
+			success: false,
+			newMsg: newMsg
+		})
 	}
 }); 
 

@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
 const config = require('./dbconfig');
-const sequelize = new Sequelize('DOONG_JI', 'admin', '12345678', {
-	host: 'mysqldb.cv9byhmyfmai.us-east-1.rds.amazonaws.com', //config.host,
+const sequelize = new Sequelize(config.database, config.user, config.password, {
+	host: config.host,
+	port: config.port,
 	dialect: 'mysql'
 });
 
@@ -13,17 +14,14 @@ const Member = sequelize.define(
 			primaryKey: true,
 			autoIncrement: true
 		},
-		user_id: {
+		token: {
 			type: Sequelize.STRING,
 			unique: true,
 			allowNull: false
 		},
-		user_pw: {
-			type: Sequelize.STRING,
-			allowNull: false
-		},
 		user_name: {
 			type: Sequelize.STRING,
+			unique: true,
 			allowNull: false
 		}
 	},
@@ -62,7 +60,7 @@ const Group = sequelize.define(
 			allowNull: true,
 			references: {
 				model: 'members',
-				key: 'user_id',
+				key: 'token',
 				onDelete: 'SET NULL'
 			}
 		}
@@ -76,11 +74,11 @@ const Group = sequelize.define(
 const Belongs_to = sequelize.define(
 	'belongs_to',
 	{
-		user_id: {
+		token: {
 			type: Sequelize.STRING,
 			references: {
 				model: 'members',
-				key: 'user_id',
+				key: 'token',
 				onDelete: 'SET NULL'
 			},
 			primaryKey: true
@@ -117,7 +115,7 @@ const Message_box = sequelize.define(
 			allowNull: false,
 			references: {
 				model: 'members',
-				key: 'user_id'
+				key: 'token'
 			}
 		},
 		msg_receiver: {
@@ -125,7 +123,7 @@ const Message_box = sequelize.define(
 			allowNull: false,
 			references: {
 				model: 'members',
-				key: 'user_id'
+				key: 'token'
 			}
 		}
 	},

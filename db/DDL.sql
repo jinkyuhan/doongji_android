@@ -165,4 +165,16 @@ select m.token,m.user_name,g.grp_id, g.grp_name,g.grp_xpos,g.grp_ypos,g.grp_radi
 from groups g, belongs_tos b, members m
 where b.grp_id=g.grp_id
 and b.token=m.token);
+
+create view Message_User_View as 
+					select * 
+                    from
+						(select user_name as sender_name , token as sender_token, msg_body
+							from message_boxes, members
+							where msg_sender=token) as a
+                           NATURAL JOIN
+							(select user_name as receiver_name,token as receiver_token, msg_body
+								from message_boxes,members
+								where msg_receiver=token)as b;
+
 commit;

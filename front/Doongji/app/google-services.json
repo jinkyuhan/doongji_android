@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "558635441973",
+    "firebase_url": "https://doongji-e3b61.firebaseio.com",
+    "project_id": "doongji-e3b61",
+    "storage_bucket": "doongji-e3b61.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558635441973:android:78d6aa24133d4b4c00f67c",
+        "android_client_info": {
+          "package_name": "com.example.doongji"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "558635441973-o0j73iu6i1dvf3j9hp8acbrs543r9eh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwmh4l5-2MGZa6sdi1IE1ctLlqbIcTGpI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "558635441973-o0j73iu6i1dvf3j9hp8acbrs543r9eh2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

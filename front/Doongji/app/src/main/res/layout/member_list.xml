@@ -2,9 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/skyblue_background"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,21 +17,18 @@
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/skyblue_background" />
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/member_name"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:background="@drawable/skyblue_background"
             android:gravity="center" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/skyblue_background" />
+            android:layout_weight="1" />
     </LinearLayout>
 
 </LinearLayout>

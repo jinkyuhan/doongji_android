@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -32,6 +33,9 @@ public class Group_indexActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+
+        TextView nameView = (TextView) findViewById(R.id.tv_doongji_list);
+        nameView.setText(User.getName()+"의 둥지 목록");
         String result = null;
         ListView listView = (ListView) findViewById(R.id.group_list);
 

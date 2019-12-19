@@ -51,7 +51,6 @@ public class MessageActivity extends AppCompatActivity {
         try {
             JSONObject results = new JSONObject(resultString);
             if (results.getBoolean("success")) {
-
                 Toast.makeText(MessageActivity.this, "전송 예약 완료", Toast.LENGTH_SHORT).show();
                 finish();
             } else {

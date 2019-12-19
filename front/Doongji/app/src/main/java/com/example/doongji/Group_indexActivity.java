@@ -36,7 +36,6 @@ public class Group_indexActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.group_list);
 
         /* User 가 속한 그룹 받아오기 */
-        Log.i("wfwfwf",User.getToken());
         try {
             conn = new HttpTask();
             result = conn.execute("/api/members/" + User.getToken() + "/belongs/groups", "GET", null).get();

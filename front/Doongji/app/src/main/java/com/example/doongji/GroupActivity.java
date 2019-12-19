@@ -80,7 +80,6 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         /* 그룹의 멤버 받아오기 */
-        Log.i("hoool", Integer.toString(groupInstance.getId()));
         try {
             conn = new HttpTask();
             resultString = conn.execute("/api/groups/" + groupInstance.getId() + "/members", "GET", null).get();
@@ -91,7 +90,6 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
         /* 받아온 멤버로 멤버 리스트 채우기 */
         JSONArray results = null;
         try {
-            Log.i("opoppop", resultString);
             results = new JSONArray(resultString);
             groupInstance.clearMember();
             for (int i = 0; i < results.length(); i++) {

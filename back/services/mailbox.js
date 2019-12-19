@@ -6,15 +6,16 @@ const Op = Sequelize.Op;
 // DOWNLOAD messages from DB
 module.exports.getUnreadMessages = async function (group_id, token) {
     try {
+	
         var query = `
             SELECT *
-            FROM doongji.message_boxes
-            WHERE msg_sender IN (
+            FROM doongji.Message_User_View
+            WHERE sender_token IN (
                     SELECT token
                     FROM  doongji.belongs_tos
                     WHERE grp_id=${group_id})
                 AND 
-                msg_receiver='${token}';
+                receiver_token='${token}';
             `
         var unreadMessages = await models.sequelize.query(query, {
             type: Sequelize.QueryTypes.SELECT,

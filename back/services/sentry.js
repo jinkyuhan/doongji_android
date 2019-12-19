@@ -40,7 +40,7 @@ router.post('/:token/come/:grp_id/public', async function (req, res, next) {
 		//message
 		var unreadMessages = await mailbox.getUnreadMessages(req.params.grp_id, req.params.token);
 		for (var msg in unreadMessages) {
-			fcm.sendMessageToOneToken(unreadMessages[msg].msg_sender, unreadMessages[msg].msg_body, unreadMessages[msg].msg_receiver);
+			fcm.sendMessageToOneToken(unreadMessages[msg].sender_name, unreadMessages[msg].msg_body, unreadMessages[msg].receiver_token);
 		}
 	} catch (err) {
 		console.log(`! ERROR getUnreadMessage fail : ${err}`);

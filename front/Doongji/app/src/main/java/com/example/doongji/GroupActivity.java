@@ -66,11 +66,22 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         String resultString = null;
+        int grp_id = getIntent().getExtras().getInt("grp_id");
 
         super.onResume();
+        try {
+            conn = new HttpTask();
+            resultString = conn.execute("/api/groups/" + grp_id, "GET", null).get();
+            JSONArray _result = new JSONArray(resultString);
+            JSONObject result = _result.getJSONObject(0);
 
-        /* 이전 액티비티로 현재창 그룹 인스턴스 초기화*/
-        this.groupInstance = User.getGroupById(getIntent().getExtras().getInt("grp_id"));
+            /* 이전 액티비티로 현재창 그룹 인스턴스 초기화*/
+            this.groupInstance = User.getGroupById(grp_id);
+            this.groupInstance.setPos(result.getDouble("grp_xpos"), result.getDouble("grp_ypos"));
+            this.groupInstance.setName(result.getString("grp_name"));
+        } catch (InterruptedException | ExecutionException | JSONException e) {
+            e.printStackTrace();
+        }
 
         /* Group Name 렌더링 */
         TextView textView_groupName = (TextView) findViewById(R.id.group_name);

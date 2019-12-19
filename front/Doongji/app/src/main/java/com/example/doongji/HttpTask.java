@@ -26,7 +26,7 @@ public class HttpTask extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPreExecute() {
-        this.ipAdr = "http://192.168.0.18:3000";
+        this.ipAdr = "http://54.180.1.180:54847";
     }
 
     protected String doInBackground(String... args) {

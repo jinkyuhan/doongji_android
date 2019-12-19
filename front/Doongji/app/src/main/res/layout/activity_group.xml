@@ -5,17 +5,18 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/skyblue_background"
     tools:context=".GroupActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="testClick"
-                android:text="반경 넘음"/>
+        <!--            <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="testClick"
+                        android:text="반경 넘음"/>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,8 +29,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="둥지 이름"
-                android:textSize="24sp" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/skyblue_background"
+                android:text=" 둥지 이름 "
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="0dp"
@@ -41,6 +47,10 @@
                 android:id="@+id/Option_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/skyblue_background"
                 android:onClick="onClickButton"
                 android:text="설정" />
 
@@ -52,8 +62,7 @@
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
-            />
+            android:layout_weight="3" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -74,6 +83,7 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        android:background="@drawable/skyblue_background"
         android:orientation="vertical"
         android:weightSum="100">
 
@@ -81,6 +91,7 @@
             android:id="@+id/Add_member_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/skyblue_background"
             android:gravity="center"
             android:onClick="onClickButton"
             android:text="멤버 초대"
@@ -90,6 +101,7 @@
             android:id="@+id/Group_setting_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/skyblue_background"
             android:gravity="center"
             android:onClick="onClickButton"
             android:text="둥지 설정 변경"
@@ -99,6 +111,7 @@
             android:id="@+id/Group_exit_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/skyblue_background"
             android:gravity="center"
             android:onClick="onClickButton"
             android:text="둥지 나가기"

@@ -4,29 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/skyblue_background"
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
-        android:gravity="center"
-        android:text="DOONG - JI"
-        android:textSize="40sp" />
+        android:layout_weight="1" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/doongji_icon" />
 
     <EditText
         android:id="@+id/name_input"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@drawable/skyblue_background"
         android:gravity="center"
-        android:hint="이름 입력" />
+        android:hint=" 닉네임 입력 "
+        android:textSize="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -34,21 +40,15 @@
             android:id="@+id/Log_in_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/skyblue_background"
             android:onClick="onClickButton"
-            android:text="기기를 등록하여 시작하기" />
+            android:text=" 기기를 등록하여 시작하기 " />
+
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:textSize="24sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2" />
+        android:layout_weight="1" />
 
 </LinearLayout>

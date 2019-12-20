@@ -91,12 +91,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-        Log.i("wfwfwf","rs : " +resultString);
         if (resultString.equals("")) {
-            Log.i("wfwfwf","hihihi");
             return false;
         } else {
-            Log.i("wfwfwf", "oooop");
             try {
                 JSONObject result = new JSONObject(resultString);
                 User.setInfo(result.getString("user_name"), result.getString("token"));

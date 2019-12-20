@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- normal -->
+    <font
+        android:font="@font/apple_r"
+        android:fontStyle="normal"
+        android:fontWeight="400" />
+
+    <!-- bold -->
+    <font
+        android:font="@font/apple_b"
+        android:fontStyle="normal"
+        android:fontWeight="700"/>
+
+</font-family>

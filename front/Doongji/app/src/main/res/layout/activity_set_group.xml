@@ -10,14 +10,23 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="3"
         android:gravity="center"
-        android:text="둥지 설정"
-        android:textSize="50sp" />
+        android:text=" 둥지 설정 "
+        android:textSize="50sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="1">
 
         <View
@@ -51,6 +60,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="1">
 
         <View
@@ -61,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="둥지 x좌표 변경 : "
+            android:text="둥지 위치 변경 : "
             android:textSize="16sp" />
 
         <View
@@ -69,54 +82,21 @@
             android:layout_height="match_parent" />
 
         <EditText
-            android:id="@+id/edit_group_xpos"
+            android:id="@+id/edit_group_loc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1" />
-
-        <View
-            android:layout_width="30dp"
-            android:layout_height="match_parent" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <View
-            android:layout_width="30dp"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="둥지 y좌표 변경 : "
-            android:textSize="16sp" />
-
-        <View
-            android:layout_width="30dp"
-            android:layout_height="match_parent" />
-
-        <EditText
-            android:id="@+id/edit_group_ypos"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1" />
-
-        <View
-            android:layout_width="30dp"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="1">
 
         <View
@@ -172,6 +152,11 @@
             android:id="@+id/Create_group_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/skyblue_background"
             android:onClick="onClickButton"
             android:text="변경" />
 

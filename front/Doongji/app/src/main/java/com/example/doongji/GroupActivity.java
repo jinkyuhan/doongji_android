@@ -66,11 +66,22 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         String resultString = null;
+        int grp_id = getIntent().getExtras().getInt("grp_id");
 
         super.onResume();
+        try {
+            conn = new HttpTask();
+            resultString = conn.execute("/api/groups/" + grp_id, "GET", null).get();
+            JSONArray _result = new JSONArray(resultString);
+            JSONObject result = _result.getJSONObject(0);
 
-        /* 이전 액티비티로 현재창 그룹 인스턴스 초기화*/
-        this.groupInstance = User.getGroupById(getIntent().getExtras().getInt("grp_id"));
+            /* 이전 액티비티로 현재창 그룹 인스턴스 초기화*/
+            this.groupInstance = User.getGroupById(grp_id);
+            this.groupInstance.setPos(result.getDouble("grp_xpos"), result.getDouble("grp_ypos"));
+            this.groupInstance.setName(result.getString("grp_name"));
+        } catch (InterruptedException | ExecutionException | JSONException e) {
+            e.printStackTrace();
+        }
 
         /* Group Name 렌더링 */
         TextView textView_groupName = (TextView) findViewById(R.id.group_name);
@@ -80,7 +91,6 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         /* 그룹의 멤버 받아오기 */
-        Log.i("hoool", Integer.toString(groupInstance.getId()));
         try {
             conn = new HttpTask();
             resultString = conn.execute("/api/groups/" + groupInstance.getId() + "/members", "GET", null).get();
@@ -91,7 +101,6 @@ public class GroupActivity extends FragmentActivity implements OnMapReadyCallbac
         /* 받아온 멤버로 멤버 리스트 채우기 */
         JSONArray results = null;
         try {
-            Log.i("opoppop", resultString);
             results = new JSONArray(resultString);
             groupInstance.clearMember();
             for (int i = 0; i < results.length(); i++) {

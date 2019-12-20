@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -32,11 +33,13 @@ public class Group_indexActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+
+        TextView nameView = (TextView) findViewById(R.id.tv_doongji_list);
+        nameView.setText(User.getName()+"의 둥지 목록");
         String result = null;
         ListView listView = (ListView) findViewById(R.id.group_list);
 
         /* User 가 속한 그룹 받아오기 */
-        Log.i("wfwfwf",User.getToken());
         try {
             conn = new HttpTask();
             result = conn.execute("/api/members/" + User.getToken() + "/belongs/groups", "GET", null).get();
